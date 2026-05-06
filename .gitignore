@@ -1,0 +1,8 @@
+node_modules
+dist
+out
+out_config
+vue_devtools_7.7.0
+.DS_Store
+.eslintcache
+*.log*

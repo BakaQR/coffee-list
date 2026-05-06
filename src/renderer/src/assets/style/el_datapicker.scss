@@ -1,0 +1,24 @@
+// 隐藏日期选择器的右面板
+// 隐藏左面板的两个箭头
+// .el-popper.is-pure.is-light.el-tooltip.el-picker__popper {
+//   width: 323px;
+//   .el-picker-panel.el-date-range-picker {
+//     width: 323px;
+//     .el-picker-panel__body {
+//       width: 323px;
+//       min-width: 323px;
+//       .el-picker-panel__content.el-date-range-picker__content.is-left {
+//         width: 100%;
+//         .el-picker-panel__icon-btn.d-arrow-left {
+//           display: none;
+//         }
+//         .el-picker-panel__icon-btn.arrow-left {
+//           display: none;
+//         }
+//       }
+//       .el-picker-panel__content.el-date-range-picker__content.is-right {
+//         display: none;
+//       }
+//     }
+//   }
+// }

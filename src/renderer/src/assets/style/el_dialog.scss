@@ -1,0 +1,17 @@
+.el-dialog__header.show-close{
+  padding-right:0px !important;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.el-dialog.is-align-center.el-dialog--center{
+  min-width: 50% !important;
+  max-width: 80% !important;
+  padding-bottom: 24px;
+}
+
+// NoteItemDetail.vue    body-class="dialogBody"
+.el-dialog__body.dialogBody{
+  width: auto !important;
+  display: inline-block;
+}

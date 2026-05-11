@@ -7,12 +7,13 @@
     "src/preload/*.d.ts"
   ],
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
+    // "ignoreDeprecations": "5.0"
     "composite": true,
+    // 此处提示错误不影响正常build  构建项目使用ts版本5.9  该选项在7.0被遗弃
     "baseUrl": ".",
     "paths": {
       "@renderer/*": [
-        "src/renderer/src/*"
+        "./src/renderer/src/*"
       ]
     }
   }

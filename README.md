@@ -2,6 +2,8 @@
 
 A Windows to-do list application built with Electron, Vue, and TypeScript.
 
+Now version ： 0.0.1
+
 ## Project Setup
 
 ### Development

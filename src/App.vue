@@ -1,34 +1,17 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { invoke } from "@tauri-apps/api/core";
 
-const greetMsg = ref("");
-const name = ref("");
-
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  greetMsg.value = await invoke("greet", { name: name.value });
-}
 </script>
 
 <template>
   <main class="container" @copy.prevent @cut.prevent @paste.prevent @contextmenu.prevent>
-    <h1>Welcome to Tauri + Vue</h1>
 
     <router-view />
-    <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link>
+    <router-link @dragstart.prevent to="/">Home</router-link>
+    <router-link @dragstart.prevent to="/about">About</router-link>
   </main>
 </template>
 
 <style scoped>
-.container {
-  user-select: none;
-}
-/* allow selection/interaction for form controls */
-/* p {
-  user-select: text;
-} */
 
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
@@ -55,6 +38,8 @@ async function greet() {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  user-select: none;
 }
 
 .container {

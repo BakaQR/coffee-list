@@ -12,31 +12,24 @@ async function greet() {
 </script>
 
 <template>
-  <main class="container">
+  <main class="container" @copy.prevent @cut.prevent @paste.prevent @contextmenu.prevent>
     <h1>Welcome to Tauri + Vue</h1>
 
-    <div class="row">
-      <a href="https://vite.dev" target="_blank">
-        <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-      </a>
-      <a href="https://tauri.app" target="_blank">
-        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-      </a>
-      <a href="https://vuejs.org/" target="_blank">
-        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-      </a>
-    </div>
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
-
-    <form class="row" @submit.prevent="greet">
-      <input id="greet-input" v-model="name" placeholder="Enter a name..." />
-      <button type="submit">Greet</button>
-    </form>
-    <p>{{ greetMsg }}</p>
+    <router-view />
+    <router-link to="/">Home</router-link>
+    <router-link to="/about">About</router-link>
   </main>
 </template>
 
 <style scoped>
+.container {
+  user-select: none;
+}
+/* allow selection/interaction for form controls */
+/* p {
+  user-select: text;
+} */
+
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }
@@ -46,6 +39,7 @@ async function greet() {
 }
 
 </style>
+
 <style>
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -137,7 +131,7 @@ button {
   margin-right: 5px;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     color: #f6f6f6;
     background-color: #2f2f2f;
@@ -155,6 +149,6 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
-}
+} */
 
 </style>

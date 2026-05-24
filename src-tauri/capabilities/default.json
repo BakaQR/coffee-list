@@ -7,6 +7,10 @@
     "core:default",
     "opener:default",
     "core:window:default",
+    "store:allow-get",
+    "store:allow-set",
+    "store:allow-save",
+    "store:allow-load",
     "core:window:allow-start-dragging",
     "core:window:allow-close",
     "core:window:allow-minimize",
@@ -16,6 +20,7 @@
     "core:window:allow-show",
     "core:window:allow-unminimize",
     "core:window:allow-set-focus",
-    "core:app:allow-default-window-icon"
+    "core:app:allow-default-window-icon",
+    "core:window:allow-set-theme"
   ]
 }

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-app",
+  "productName": "coffee-list",
   "version": "0.1.0",
-  "identifier": "com.bakaqr.tauri-app",
+  "identifier": "com.bakaqr.coffee-list",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -12,9 +12,13 @@
   "app": {
     "windows": [
       {
-        "title": "tauri-app",
+        "title": "coffee-list",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "minHeight": 600,
+        "minWidth": 800,
+        "maximizable": false,
+        "theme": "Light"
       }
     ],
     "security": {

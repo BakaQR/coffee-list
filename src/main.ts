@@ -2,6 +2,9 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
+// 引入全局样式
+import "./assets/style/root.css";
+
 // 数据读取
 import { initialStore } from "./tauri/store-api";
 initialStore();

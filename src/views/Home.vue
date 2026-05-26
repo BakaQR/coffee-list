@@ -37,8 +37,7 @@ async function greet() {
 </template>
 
 <style scoped>
-.container,
-:root {
+.container {
   -webkit-user-select: none;
   user-select: none;
 }

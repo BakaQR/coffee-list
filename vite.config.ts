@@ -2,9 +2,12 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 
-// ant design vue auto import
+// ant-design-vue auto import
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+
+// vue-devtools
+import VueDevtools from 'vite-plugin-vue-devtools';
 
 const host = process.env.TAURI_DEV_HOST;
 
@@ -12,7 +15,11 @@ const host = process.env.TAURI_DEV_HOST;
 export default defineConfig(async () => ({
   plugins: [
     vue(),
+    VueDevtools({
+      componentInspector: true
+    }),
     Components({
+      // auto import ant-design-vue components
       resolvers: [AntDesignVueResolver({
           importStyle: false
         }

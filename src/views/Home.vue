@@ -48,6 +48,10 @@ input, textarea, select, button {
   user-select: text;
 }
 
+.logo.vue{
+  transition: filter 0.5s ease;
+}
+
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }

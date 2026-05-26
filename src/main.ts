@@ -13,5 +13,6 @@ initialStore();
 import "./tauri/window-manager";
 
 const app = createApp(App);
+
 app.use(router);
 app.mount("#app");

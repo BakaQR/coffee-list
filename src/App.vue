@@ -12,21 +12,7 @@
 </template>
 
 <style scoped>
-
-.app-container .logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.app-container .logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
-}
-
 .app-container {
-  margin: 0;
-  padding: 0;
-}
-
-body {
   margin: 0;
   padding: 0;
   width: 100vw;

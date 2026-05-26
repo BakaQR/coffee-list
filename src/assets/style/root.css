@@ -30,6 +30,8 @@
 body{
   margin: 0;
   padding: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 a {
@@ -39,4 +41,9 @@ a {
 
   /* transition: 0.75s; */
   /* filter: drop-shadow(0 0 2em #24c8db); */
+}
+
+h1,h2,h3,h4,h5,h6 {
+  padding: 0;
+  margin: 0;
 }

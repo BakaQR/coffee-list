@@ -8,6 +8,7 @@
     <router-view />
     <router-link @dragstart.prevent to="/">Home</router-link>
     <router-link @dragstart.prevent to="/about">About</router-link>
+    <router-link @dragstart.prevent to="/settings">Settings</router-link>
   </main>
 </template>
 

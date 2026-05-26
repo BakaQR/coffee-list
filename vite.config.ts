@@ -1,13 +1,31 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import { fileURLToPath, URL } from "node:url";
 
+// ant design vue auto import
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    Components({
+      resolvers: [AntDesignVueResolver({
+          importStyle: false
+        }
+      )],
+    })
+  ],
+
+  resolve: {
+    alias: {
+      '@renderer': fileURLToPath(new URL('./src', import.meta.url))
+    },
+  },
+
   build: {
     target: 'esnext'
   },

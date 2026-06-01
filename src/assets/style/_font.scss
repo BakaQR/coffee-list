@@ -1,0 +1,26 @@
+@use 'sass:map';
+
+// 字体
+$font-family-base: Inter, Avenir, Helvetica, Arial, sans-serif;
+
+// 字体大小
+$font-sizes: (
+  'base': 16px,
+  'xl': 20px,
+);
+
+// 字重
+$font-weights: (
+  'light': 300,
+  'normal': 400,
+  'medium': 500,
+  'bold': 800,
+);
+
+@function font-size($size) {
+  @return map.get($font-sizes, $size);
+}
+
+@function font-weight($weight) {
+  @return map.get($font-weights, $weight);
+}

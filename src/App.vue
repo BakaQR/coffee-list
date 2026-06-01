@@ -1,15 +1,26 @@
 <template>
-  <div class="app-container" @copy.prevent @cut.prevent @paste.prevent @contextmenu.prevent>
+  <div
+    class="app-container"
+    @copy.prevent
+    @cut.prevent
+    @paste.prevent
+    @contextmenu.prevent
+  >
     <a-layout class="app-layout">
-      <a-layout-sider 
-        v-model:collapsed="collapsed" 
-        theme="light" 
-        collapsedWidth="60"
+      <a-layout-sider
+        v-model:collapsed="collapsed"
+        theme="light"
+        collapsed-width="60"
         :trigger="null"
         collapsible
-        class = "app-layout-sider">
+        class="app-layout-sider"
+      >
         <div class="app-logo" />
-        <a-menu v-model:selectedKeys="selectedKeys" mode="inline" @click="handleMenuRouterTo">
+        <a-menu
+          v-model:selected-keys="selectedKeys"
+          mode="inline"
+          @click="handleMenuRouterTo"
+        >
           <a-menu-item key="/">
             <BookOutlined />
             <span>便签</span>
@@ -30,17 +41,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import router from "./router";
-import { BookOutlined, SettingOutlined } from "@ant-design/icons-vue";
+import { ref } from 'vue'
+import router from './router'
+import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
-const collapsed = ref<boolean>(true);
-const selectedKeys = ref<string[]>(['/']);
+const collapsed = ref<boolean>(true)
+const selectedKeys = ref<string[]>(['/'])
 
 const handleMenuRouterTo = (e: { key: string }) => {
-  router.push(e.key);
-};
-
+  router.push(e.key)
+}
 </script>
 
 <style scoped>
@@ -67,6 +77,4 @@ const handleMenuRouterTo = (e: { key: string }) => {
 .app-layout-sider {
   background: #fff;
 }
-
-
 </style>

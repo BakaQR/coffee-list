@@ -4,12 +4,12 @@ import Settings from '@renderer/views/Settings.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/settings', name: 'Settings', component: Settings }
+  { path: '/settings', name: 'Settings', component: Settings },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
 export default router

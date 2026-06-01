@@ -1,0 +1,24 @@
+@use 'font' as font;
+
+.view-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.view-layout-header {
+  background: #fff;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.view-layout-header-text {
+  font-size: font.font-size('xl');
+  font-weight: font.font-weight('medium');
+}
+
+.view-layout-content {
+  margin: 16px;
+}

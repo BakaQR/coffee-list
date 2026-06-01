@@ -1,0 +1,55 @@
+@use 'font' as font;
+
+:root {
+  font-family: font.$font-family-base;
+  font-size: font.font-size('base');
+  font-weight: font.font-weight('normal');
+
+  color: #000000;
+  background-color: #f6f6f6;
+
+  font-synthesis: none; /* 禁止浏览器合成字体样式 */
+  text-rendering: optimizeLegibility; /* 优化文本渲染 */
+  -webkit-font-smoothing: antialiased; /* 启用抗锯齿字体平滑 (WebKit) */
+  -moz-osx-font-smoothing: grayscale; /* 启用灰度字体平滑 (Firefox on macOS) */
+  -webkit-text-size-adjust: 100%; /* 禁止自动调整文本大小 (WebKit) */
+
+  user-select: none; /* 禁止用户选择文本 */
+
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  position: relative;
+
+  height: 100vh;
+  width: 100vw;
+
+  /* overflow: hidden; */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+
+  /* transition: 0.75s; */
+  /* filter: drop-shadow(0 0 2em #24c8db); */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+}

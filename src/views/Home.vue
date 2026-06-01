@@ -1,63 +1,41 @@
-<script setup lang="ts">
-import { ref } from "vue";
-import { invoke } from "@tauri-apps/api/core";
-
-const greetMsg = ref("");
-const name = ref("");
-
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  greetMsg.value = await invoke("greet", { name: name.value });
-}
-</script>
-
 <template>
-  <main class="container" @copy.prevent @cut.prevent @paste.prevent @contextmenu.prevent>
-    <h1>Welcome to Tauri + Vue</h1>
-
-    <div class="row">
-      <a href="https://vite.dev" target="_blank">
-        <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-      </a>
-      <a href="https://tauri.app" target="_blank">
-        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-      </a>
-      <a href="https://vuejs.org/" target="_blank">
-        <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
-      </a>
-    </div>
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
-
-    <form class="row" @submit.prevent="greet">
-      <input id="greet-input" v-model="name" placeholder="Enter a name..." autocomplete="off" />
-      <button type="submit">Greet</button>
-    </form>
-    <p>{{ greetMsg }}</p>
-  </main>
+  <div class="home-container" @copy.prevent @cut.prevent @paste.prevent @contextmenu.prevent>
+    <a-layout-header class="home-layout-header">
+      <span class="home-layout-header-text">便签</span>
+    </a-layout-header>
+    <a-layout-content class="home-layout-content">
+        
+    </a-layout-content>
+  </div>
 </template>
 
+<script setup lang="ts">
+import { ref } from "vue";
+
+
+</script>
 <style scoped>
-.container {
-  -webkit-user-select: none;
-  user-select: none;
+.home-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
-/* allow selection/interaction for form controls */
-input, textarea, select, button {
-  -webkit-user-select: text;
-  user-select: text;
+.home-layout-header {
+  background: #fff;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
 }
 
-.logo.vue{
-  transition: filter 0.5s ease;
+.home-layout-header-text {
+  font-size: 20px;
+  font-weight: 500;
 }
 
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
+.home-layout-content {
+  margin: 16px;
 }
 
 </style>

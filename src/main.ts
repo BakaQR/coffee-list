@@ -7,7 +7,7 @@ import '@renderer/assets/style/root.scss'
 
 // 数据初始化
 import { initialStore } from '@renderer/tauri/store-api'
-initialStore()
+await initialStore()
 
 // 窗口管理 (包含系统托盘)
 import '@renderer/tauri/window-manager'

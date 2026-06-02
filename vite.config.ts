@@ -1,35 +1,44 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { fileURLToPath, URL } from "node:url";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import { fileURLToPath, URL } from 'node:url'
+import Components from 'unplugin-vue-components/vite'
+
+// element-plus auto import
+import AutoImport from 'unplugin-auto-import/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // ant-design-vue auto import
-import Components from 'unplugin-vue-components/vite';
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
 // vue-devtools
-import VueDevtools from 'vite-plugin-vue-devtools';
+import VueDevtools from 'vite-plugin-vue-devtools'
 
-const host = process.env.TAURI_DEV_HOST;
+const host = process.env.TAURI_DEV_HOST
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
   plugins: [
     vue(),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
     VueDevtools({
-      componentInspector: true
+      componentInspector: true,
     }),
     Components({
       // auto import ant-design-vue components
-      resolvers: [AntDesignVueResolver({
-          importStyle: false
-        }
-      )],
-    })
+      resolvers: [
+        AntDesignVueResolver({
+          importStyle: false,
+        }),
+        ElementPlusResolver(),
+      ],
+    }),
   ],
 
   resolve: {
     alias: {
-      '@renderer': fileURLToPath(new URL('./src', import.meta.url))
+      '@renderer': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 
@@ -39,14 +48,14 @@ export default defineConfig(async () => ({
         loadPaths: [
           fileURLToPath(new URL('./src', import.meta.url)),
           fileURLToPath(new URL('./src/assets', import.meta.url)),
-          fileURLToPath(new URL('./src/assets/style', import.meta.url))
-        ]
-      }
-    }
+          fileURLToPath(new URL('./src/assets/style', import.meta.url)),
+        ],
+      },
+    },
   },
 
   build: {
-    target: 'esnext'
+    target: 'esnext',
   },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
@@ -60,14 +69,14 @@ export default defineConfig(async () => ({
     host: host || false,
     hmr: host
       ? {
-          protocol: "ws",
+          protocol: 'ws',
           host,
           port: 1421,
         }
       : undefined,
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
-      ignored: ["**/src-tauri/**"],
+      ignored: ['**/src-tauri/**'],
     },
   },
-}));
+}))

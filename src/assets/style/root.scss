@@ -25,7 +25,7 @@
   height: 100vh;
   width: 100vw;
 
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 body {
@@ -44,12 +44,7 @@ a {
   /* filter: drop-shadow(0 0 2em #24c8db); */
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   padding: 0;
   margin: 0;
 }

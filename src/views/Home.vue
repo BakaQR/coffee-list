@@ -34,29 +34,32 @@
 <script setup lang="ts">
 import NoteCard from '@renderer/components/NoteCard.vue'
 
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import {
-  I_NoteCard,
-  setNoteCardList,
-  getNoteCardList,
-} from '@renderer/tauri/store-api'
+import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
+
+const storeNoteCard = useNoteCardStore()
 
 // list需要借助listTemp来实现双向绑定，因为get中无法使用await，无法正确更新列表
+// const list = computed({
+//   get: () => listTemp.value,
+//   set: async (value: I_NoteCard[]) => {
+//     await setNoteCardList(value)
+//     await updateList()
+//   },
+// })
+// const listTemp = ref<I_NoteCard[]>([])
+// const updateList = async () => {
+//   listTemp.value = await getNoteCardList()
+// }
+
 const list = computed({
-  get: () => listTemp.value,
-  set: async (value: I_NoteCard[]) => {
-    await setNoteCardList(value)
-    await updateList()
-  },
+  get: () => storeNoteCard.list,
+  set: async (nv) => await storeNoteCard.saveNoteCardList(nv),
 })
-const listTemp = ref<I_NoteCard[]>([])
-const updateList = async () => {
-  listTemp.value = await getNoteCardList()
-}
 
 onMounted(async () => {
-  await updateList()
+  // await updateList()
 })
 </script>
 <style scoped lang="scss">

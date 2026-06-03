@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from '@renderer/App.vue'
 import router from '@renderer/router'
+import { pinia, initializeStore } from '@renderer/pinia'
 
 // 引入全局样式
 import '@renderer/assets/style/root.scss'
@@ -15,4 +16,7 @@ import '@renderer/tauri/window-manager'
 const app = createApp(App)
 
 app.use(router)
+app.use(pinia)
+await initializeStore()
+
 app.mount('#app')

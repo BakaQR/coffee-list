@@ -7,7 +7,14 @@
     @contextmenu.prevent
   >
     <a-layout-header class="view-layout-header">
-      <span class="view-layout-header-text">设置</span>
+      <a-row style="width: 100%" justify="space-between" align="middle">
+        <a-col :span="2" style="text-align: center">
+          <span class="view-layout-header-text">设置</span>
+        </a-col>
+        <a-col :span="2" style="text-align: center">
+          <a-button>按钮</a-button>
+        </a-col>
+      </a-row>
     </a-layout-header>
     <a-layout-content class="view-layout-content">
       <a-button type="primary">Primary Button</a-button>

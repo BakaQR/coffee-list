@@ -21,11 +21,11 @@
           mode="inline"
           @click="handleMenuRouterTo"
         >
-          <a-menu-item key="/">
+          <a-menu-item key="/" title="">
             <BookOutlined />
             <span>便签</span>
           </a-menu-item>
-          <a-menu-item key="/settings">
+          <a-menu-item key="/settings" title="">
             <SettingOutlined />
             <span>设置</span>
           </a-menu-item>

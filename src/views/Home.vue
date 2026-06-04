@@ -7,7 +7,22 @@
     @contextmenu.prevent
   >
     <a-layout-header class="view-layout-header">
-      <span class="view-layout-header-text"> 便签 </span>
+      <a-row style="width: 100%" justify="space-between" align="middle">
+        <a-col :span="2" style="text-align: center">
+          <span class="view-layout-header-text"> 便签 </span>
+        </a-col>
+        <a-col :span="2" style="text-align: center">
+          <a-tooltip :color="`blue`">
+            <template #title>添加便签</template>
+            <a-button
+              type="text"
+              size="large"
+              :icon="h(FileAddOutlined)"
+              @click="addNoteCard"
+            ></a-button>
+          </a-tooltip>
+        </a-col>
+      </a-row>
     </a-layout-header>
     <a-layout-content class="view-layout-content">
       <el-scrollbar class="note-card-scrollbar">
@@ -21,9 +36,10 @@
         >
           <NoteCard
             v-for="item in list"
+            :id="item.id"
             :key="item.id"
-            :title="`测试标题${item.id}`"
-            :content="`测试内容${item.content}`"
+            :title="item.title"
+            :content="item.content"
           />
         </VueDraggable>
       </el-scrollbar>
@@ -33,34 +49,23 @@
 
 <script setup lang="ts">
 import NoteCard from '@renderer/components/NoteCard.vue'
+import { FileAddOutlined } from '@ant-design/icons-vue'
 
-import { computed, onMounted } from 'vue'
+import { computed, h } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 
 const storeNoteCard = useNoteCardStore()
 
-// list需要借助listTemp来实现双向绑定，因为get中无法使用await，无法正确更新列表
-// const list = computed({
-//   get: () => listTemp.value,
-//   set: async (value: I_NoteCard[]) => {
-//     await setNoteCardList(value)
-//     await updateList()
-//   },
-// })
-// const listTemp = ref<I_NoteCard[]>([])
-// const updateList = async () => {
-//   listTemp.value = await getNoteCardList()
-// }
-
+// 从 pinia 中获取 note-card 数据进行双向绑定
 const list = computed({
   get: () => storeNoteCard.list,
   set: async (nv) => await storeNoteCard.saveNoteCardList(nv),
 })
 
-onMounted(async () => {
-  // await updateList()
-})
+const addNoteCard = () => {
+  console.log('add notecard')
+}
 </script>
 <style scoped lang="scss">
 @use 'style/_layout';

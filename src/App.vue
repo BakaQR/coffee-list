@@ -65,16 +65,12 @@ const handleMenuRouterTo = (e: { key: string }) => {
   height: 32px;
   width: 32px;
   margin: 16px auto;
-  background-image: url('./assets/icon/icon.png');
+  background-image: url('./assets/icon/logo.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .app-layout {
   height: 100vh;
-}
-
-.app-layout-sider {
-  background: #fff;
 }
 </style>

@@ -31,7 +31,7 @@ const trayOptions = {
   menu,
   menuOnLeftClick: false,
   icon: defaultIcon ?? undefined,
-  tooltip: 'coffee-list',
+  tooltip: 'Coffee List',
 }
 
 const tray = await TrayIcon.new(trayOptions)

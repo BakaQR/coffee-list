@@ -12,7 +12,7 @@
           <span class="view-layout-header-text">设置</span>
         </a-col>
         <a-col :span="2" style="text-align: center">
-          <a-button>按钮</a-button>
+          <!-- <a-button>按钮</a-button> -->
         </a-col>
       </a-row>
     </a-layout-header>

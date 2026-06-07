@@ -4,7 +4,7 @@
       class="note-card"
       :title="props.title"
       :bordered="false"
-      hoverable="true"
+      :hoverable="true"
     >
       <p class="note-card-content">{{ props.content }}</p>
       <template #actions>

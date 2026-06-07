@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "coffee-list",
+        "title": "Coffee List",
         "width": 800,
         "height": 600,
         "minHeight": 600,

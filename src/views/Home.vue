@@ -51,11 +51,15 @@
 import NoteCard from '@renderer/components/NoteCard.vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 
-import { computed, h } from 'vue'
+import { computed, h, onMounted } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 
 const storeNoteCard = useNoteCardStore()
+
+onMounted(async () => {
+  await storeNoteCard.updateNoteCardList()
+})
 
 // 从 pinia 中获取 note-card 数据进行双向绑定
 const list = computed({

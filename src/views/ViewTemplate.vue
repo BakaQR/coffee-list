@@ -26,5 +26,5 @@
 // import { ref } from "vue";
 </script>
 <style scoped lang="scss">
-@use 'style/_layout';
+@use '_layout';
 </style>

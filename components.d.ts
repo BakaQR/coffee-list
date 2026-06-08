@@ -14,6 +14,7 @@ declare module 'vue' {
     AButton: typeof import('ant-design-vue/es')['Button']
     ACard: typeof import('ant-design-vue/es')['Card']
     ACol: typeof import('ant-design-vue/es')['Col']
+    ADivider: typeof import('ant-design-vue/es')['Divider']
     ALayout: typeof import('ant-design-vue/es')['Layout']
     ALayoutContent: typeof import('ant-design-vue/es')['LayoutContent']
     ALayoutHeader: typeof import('ant-design-vue/es')['LayoutHeader']
@@ -22,10 +23,13 @@ declare module 'vue' {
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     ARow: typeof import('ant-design-vue/es')['Row']
     ASpace: typeof import('ant-design-vue/es')['Space']
+    ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     NoteCard: typeof import('./src/components/NoteCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SettingOption: typeof import('./src/components/SettingOption.vue')['default']
+    SettingsOption: typeof import('./src/components/SettingsOption.vue')['default']
   }
 }

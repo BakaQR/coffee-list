@@ -8,7 +8,11 @@
     >
       <p class="note-card-content">{{ props.content }}</p>
       <template #actions>
-        <a-tooltip v-if="!isCheck" :color="`#00b96b`">
+        <a-tooltip
+          v-if="!isCheck"
+          :color="`#00b96b`"
+          :open="storeSettings.iconTooltip ? undefined : false"
+        >
           <template #title>已完成</template>
           <CheckOutlined
             key="check"
@@ -16,7 +20,11 @@
             @click="checkNoteCard"
           />
         </a-tooltip>
-        <a-tooltip v-if="isCheck" :color="`#00b96b`">
+        <a-tooltip
+          v-if="isCheck"
+          :color="`#00b96b`"
+          :open="storeSettings.iconTooltip ? undefined : false"
+        >
           <template #title>取消完成标记</template>
           <CloseOutlined
             key="unCheck"
@@ -24,11 +32,17 @@
             @click="unCheckNoteCard"
           />
         </a-tooltip>
-        <a-tooltip :color="`blue`">
+        <a-tooltip
+          :color="`blue`"
+          :open="storeSettings.iconTooltip ? undefined : false"
+        >
           <template #title>编辑</template>
           <EditOutlined key="edit" @click="editNoteCard" />
         </a-tooltip>
-        <a-tooltip :color="`red`">
+        <a-tooltip
+          :color="`red`"
+          :open="storeSettings.iconTooltip ? undefined : false"
+        >
           <template #title>删除</template>
           <DeleteOutlined
             key="delete"
@@ -48,6 +62,10 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons-vue'
 import { ref } from 'vue'
+
+import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
+
+const storeSettings = useSettingsStore()
 
 const props = defineProps({
   id: {

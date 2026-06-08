@@ -12,14 +12,17 @@
           <span class="view-layout-header-text"> 便签 </span>
         </a-col>
         <a-col :span="2" style="text-align: center">
-          <a-tooltip :color="`blue`">
+          <a-tooltip
+            :color="`blue`"
+            :open="storeSettings.iconTooltip ? undefined : false"
+          >
             <template #title>添加便签</template>
             <a-button
               type="text"
               size="large"
               :icon="h(FileAddOutlined)"
               @click="addNoteCard"
-            ></a-button>
+            />
           </a-tooltip>
         </a-col>
       </a-row>
@@ -51,15 +54,13 @@
 import NoteCard from '@renderer/components/NoteCard.vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 
-import { computed, h, onMounted } from 'vue'
+import { computed, h } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
+import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
 
 const storeNoteCard = useNoteCardStore()
-
-onMounted(async () => {
-  await storeNoteCard.updateNoteCardList()
-})
+const storeSettings = useSettingsStore()
 
 // 从 pinia 中获取 note-card 数据进行双向绑定
 const list = computed({
@@ -72,7 +73,7 @@ const addNoteCard = () => {
 }
 </script>
 <style scoped lang="scss">
-@use 'style/_layout';
+@use '_layout';
 
 .view-layout-content {
   margin: 16px 8px 16px 16px;

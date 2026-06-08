@@ -21,11 +21,11 @@
           mode="inline"
           @click="handleMenuRouterTo"
         >
-          <a-menu-item key="/" title="">
+          <a-menu-item key="/" :title="pageNoteCardTitle">
             <BookOutlined />
             <span>便签</span>
           </a-menu-item>
-          <a-menu-item key="/settings" title="">
+          <a-menu-item key="/settings" :title="pageSettingsTitle">
             <SettingOutlined />
             <span>设置</span>
           </a-menu-item>
@@ -41,16 +41,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import router from './router'
+import { computed, onMounted, ref } from 'vue'
 import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 const collapsed = ref<boolean>(true)
 const selectedKeys = ref<string[]>(['/'])
 
+// 路由跳转
 const handleMenuRouterTo = (e: { key: string }) => {
   router.push(e.key)
 }
+
+import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
+import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
+const storeNoteCard = useNoteCardStore()
+const storeSettings = useSettingsStore()
+
+onMounted(async () => {
+  // 初始化数据
+  await storeNoteCard.updateNoteCardList()
+  await storeSettings.updateSettingsData()
+})
+
+const pageNoteCardTitle = computed(() =>
+  storeSettings.iconTooltip ? '便签' : ''
+)
+const pageSettingsTitle = computed(() =>
+  storeSettings.iconTooltip ? '设置' : ''
+)
 </script>
 
 <style scoped>

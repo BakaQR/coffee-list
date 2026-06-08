@@ -17,14 +17,47 @@
       </a-row>
     </a-layout-header>
     <a-layout-content class="view-layout-content">
-      <a-button type="primary">Primary Button</a-button>
+      <a-card style="margin-bottom: 16px" title="系统设置" :bordered="false">
+        <SettingsOption>
+          <template #description>
+            图标文字提示，鼠标悬停在右边图标查看效果。
+            <a-tooltip :color="`blue`">
+              <template v-if="switchIconTooltip" #title>添加便签</template>
+              <a-button type="text" size="large" :icon="h(FileAddOutlined)" />
+            </a-tooltip>
+          </template>
+          <template #switch>
+            <a-switch v-model:checked="switchIconTooltip" />
+          </template>
+        </SettingsOption>
+      </a-card>
     </a-layout-content>
   </div>
 </template>
 
 <script setup lang="ts">
-// import { ref } from "vue";
+import { computed, h } from 'vue'
+import { FileAddOutlined } from '@ant-design/icons-vue'
+import SettingsOption from '@renderer/components/SettingsOption.vue'
+
+import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
+import { SettingsOptions } from '@renderer/tauri/store-api'
+const storeSettings = useSettingsStore()
+
+const switchIconTooltip = computed({
+  get: () => storeSettings.iconTooltip,
+  set: async (v: string | number | boolean) => {
+    await storeSettings.setSettingsOptionsByName(SettingsOptions.IconTooltip, v)
+    await storeSettings.updateIconTooltip()
+  },
+})
 </script>
 <style scoped lang="scss">
-@use 'style/_layout';
+@use '_layout';
+@use '_color' as color;
+@use '_font' as font;
+
+.setting-option {
+  padding: 8px 0;
+}
 </style>

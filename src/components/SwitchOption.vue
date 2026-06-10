@@ -17,6 +17,8 @@
   </a-row>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// 使用 a-switch 的设置选项
+</script>
 
 <style scoped></style>

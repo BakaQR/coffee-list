@@ -18,7 +18,7 @@
     </a-layout-header>
     <a-layout-content class="view-layout-content">
       <a-card style="margin-bottom: 16px" title="系统设置" :bordered="false">
-        <SettingsOption>
+        <SwitchOption>
           <template #description>
             图标文字提示，鼠标悬停在右边图标查看效果。
             <a-tooltip :color="`blue`">
@@ -29,7 +29,7 @@
           <template #switch>
             <a-switch v-model:checked="switchIconTooltip" />
           </template>
-        </SettingsOption>
+        </SwitchOption>
       </a-card>
     </a-layout-content>
   </div>
@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { computed, h } from 'vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
-import SettingsOption from '@renderer/components/SettingsOption.vue'
+import SwitchOption from '@renderer/components/SwitchOption.vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
 import { SettingsOptions } from '@renderer/tauri/store-api'

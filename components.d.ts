@@ -27,6 +27,6 @@ declare module 'vue' {
     NoteCard: typeof import('./src/components/NoteCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SettingsOption: typeof import('./src/components/SettingsOption.vue')['default']
+    SwitchOption: typeof import('./src/components/SwitchOption.vue')['default']
   }
 }

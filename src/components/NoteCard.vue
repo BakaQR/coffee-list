@@ -1,11 +1,9 @@
 <template>
   <div class="note-card-container">
-    <a-card
-      class="note-card"
-      :title="props.title"
-      :bordered="false"
-      :hoverable="true"
-    >
+    <a-card class="note-card" :bordered="false" :hoverable="true">
+      <template #title>
+        <p class="note-card-title">{{ props.title }}</p>
+      </template>
       <p class="note-card-content">{{ props.content }}</p>
       <template #actions>
         <a-tooltip
@@ -88,21 +86,32 @@ const checkNoteCard = () => {
   console.log('check note card')
   isCheck.value = true
 }
+
 const unCheckNoteCard = () => {
   console.log('un check note card')
   isCheck.value = false
 }
+
 const editNoteCard = () => {
   console.log('edit note card')
 }
+
 const deleteNoteCard = () => {
   console.log('delete note card')
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use 'color' as color;
+@use 'font' as font;
+
 .note-card-container {
   width: 220px;
+}
+
+.note-card-title {
+  color: color.$light-text-primary;
+  font-weight: font.font-weight('medium');
 }
 
 .check-icon:hover :deep(svg) {
@@ -118,11 +127,13 @@ const deleteNoteCard = () => {
   padding: 0;
   overflow: hidden;
   display: -webkit-box;
+  color: color.$light-text-primary;
+
   line-clamp: 5;
-  -webkit-line-clamp: 5; /* 限制5行 */
-  -webkit-box-orient: vertical; /* 垂直排列 */
-  text-overflow: ellipsis; /* 显示省略号 */
-  word-break: break-word; /* 自动换行 */
-  line-height: 1.5; /* 行高 */
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  line-height: 1.5;
 }
 </style>

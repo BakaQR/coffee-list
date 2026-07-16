@@ -17,7 +17,10 @@
       </a-row>
     </a-layout-header>
     <a-layout-content class="view-layout-content">
-      <a-card style="margin-bottom: 16px" title="系统设置" :bordered="false">
+      <a-card style="margin-bottom: 16px" :bordered="false">
+        <template #title>
+          <p class="setting-title">系统设置</p>
+        </template>
         <SwitchOption>
           <template #description>
             图标文字提示，鼠标悬停在右边图标查看效果。
@@ -57,7 +60,7 @@ const switchIconTooltip = computed({
 @use '_color' as color;
 @use '_font' as font;
 
-.setting-option {
-  padding: 8px 0;
+.setting-title {
+  color: color.$light-primary;
 }
 </style>

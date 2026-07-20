@@ -3553,6 +3553,8 @@ dependencies = [
  "strum",
  "tauri",
  "thiserror 2.0.18",
+ "webview2-com",
+ "windows",
 ]
 
 [[package]]

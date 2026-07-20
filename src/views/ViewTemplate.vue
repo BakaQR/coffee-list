@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="view-container"
-    @copy.prevent
-    @cut.prevent
-    @paste.prevent
-    @contextmenu.prevent
-  >
+  <div class="view-container">
     <a-layout-header class="view-layout-header">
       <a-row style="width: 100%" justify="space-between" align="middle">
         <a-col :span="2" style="text-align: center">

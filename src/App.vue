@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="app-container"
-    @copy.prevent
-    @cut.prevent
-    @paste.prevent
-    @contextmenu.prevent
-  >
+  <div class="app-container">
     <a-layout class="app-layout">
       <a-layout-sider
         v-model:collapsed="collapsed"
@@ -62,6 +56,10 @@ onMounted(async () => {
   // 初始化数据
   await storeNoteCard.updateNoteCardList()
   await storeSettings.updateSettingsData()
+
+  window.addEventListener('mouseup', (e) => {
+    if (e.button === 3 || e.button === 4) e.preventDefault()
+  })
 })
 
 const pageNoteCardTitle = computed(() =>

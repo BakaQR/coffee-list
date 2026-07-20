@@ -56,9 +56,9 @@ const switchIconTooltip = computed({
 })
 </script>
 <style scoped lang="scss">
-@use '_layout';
-@use '_color' as color;
-@use '_font' as font;
+@use 'layout';
+@use 'color' as color;
+@use 'font' as font;
 
 .setting-title {
   color: color.$light-primary;

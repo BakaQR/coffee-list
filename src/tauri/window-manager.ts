@@ -5,6 +5,7 @@ import { TrayIcon } from '@tauri-apps/api/tray'
 
 const appWindow = getCurrentWindow()
 appWindow.onCloseRequested(async (e) => {
+  // e.preventDefault()
   console.log(e.event.toString())
 })
 
@@ -29,7 +30,7 @@ const defaultIcon = await defaultWindowIcon()
 
 const trayOptions = {
   menu,
-  menuOnLeftClick: false,
+  menuOnLeftClick: true,
   icon: defaultIcon ?? undefined,
   tooltip: 'Coffee List',
 }

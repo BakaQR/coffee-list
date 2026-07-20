@@ -9,13 +9,16 @@ import {
 
 export const useNoteCardStore = defineStore('note-card-store', () => {
   const list = ref<I_NoteCard[]>([])
+
   const updateNoteCardList = async () => {
     list.value = await getNoteCardList()
   }
+
   const saveNoteCardList = async (list: I_NoteCard[] | undefined) => {
     if (list !== undefined) await setNoteCardList(list)
     await updateNoteCardList()
   }
+
   return {
     list,
     updateNoteCardList,

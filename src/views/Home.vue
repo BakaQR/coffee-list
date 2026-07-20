@@ -27,6 +27,7 @@
         </a-col>
       </a-row>
     </a-layout-header>
+
     <a-layout-content class="view-layout-content">
       <el-scrollbar class="note-card-scrollbar">
         <VueDraggable
@@ -47,6 +48,20 @@
         </VueDraggable>
       </el-scrollbar>
     </a-layout-content>
+
+    <a-modal
+      :open="open"
+      title="添加便签"
+      centered
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <div @contextmenu.prevent>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -54,7 +69,7 @@
 import NoteCard from '@renderer/components/NoteCard.vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 
-import { computed, h } from 'vue'
+import { computed, h, ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
@@ -69,11 +84,21 @@ const list = computed({
 })
 
 const addNoteCard = () => {
-  console.log('add notecard')
+  open.value = true
+}
+
+const open = ref(false)
+
+const handleOk = () => {
+  open.value = false
+}
+
+const handleCancel = () => {
+  open.value = false
 }
 </script>
 <style scoped lang="scss">
-@use '_layout';
+@use 'layout';
 
 .view-layout-content {
   margin: 16px 8px 16px 16px;

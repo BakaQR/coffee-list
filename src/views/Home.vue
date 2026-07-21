@@ -3,7 +3,7 @@
     <a-layout-header class="view-layout-header">
       <a-row style="width: 100%" justify="space-between" align="middle">
         <a-col :span="2" style="text-align: center">
-          <span class="view-layout-header-text"> 便签 </span>
+          <span class="font-text-title"> 便签 </span>
         </a-col>
         <a-col :span="2" style="text-align: center">
           <a-tooltip
@@ -46,7 +46,6 @@
     <a-modal
       :open="open"
       centered
-      title="添加便签"
       cancel-text="取消"
       ok-text="确定"
       style="width: 60%"
@@ -55,9 +54,32 @@
       @ok="handleOk"
       @cancel="handleCancel"
     >
-      <div>
-        <a-input v-model:value="addTitle" placeholder="请输入便签标题" />
-        <a-textarea v-model:value="addContent" placeholder="请输入便签内容" />
+      <div class="modal-container">
+        <div class="modal-header">
+          <p class="font-text-title">添加便签</p>
+        </div>
+        <div class="modal-body">
+          <a-form
+            ref="formRef"
+            :model="formState"
+            autocomplete="off"
+            layout="vertical"
+          >
+            <a-form-item label="标题" name="title">
+              <a-input
+                v-model:value="formState.title"
+                placeholder="请输入便签标题"
+              />
+            </a-form-item>
+            <a-form-item label="内容" name="content">
+              <a-textarea
+                v-model:value="formState.content"
+                placeholder="请输入便签内容"
+                :auto-size="{ minRows: 3, maxRows: 8 }"
+              />
+            </a-form-item>
+          </a-form>
+        </div>
       </div>
     </a-modal>
   </div>
@@ -67,13 +89,15 @@
 import NoteCard from '@renderer/components/NoteCard.vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 
-import { computed, h, ref } from 'vue'
+import { computed, h, reactive, ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
 
 const storeNoteCard = useNoteCardStore()
 const storeSettings = useSettingsStore()
+
+const formRef = ref()
 
 // 从 pinia 中获取 note-card 数据进行双向绑定
 const list = computed({
@@ -89,11 +113,11 @@ const addNoteCard = () => {
 
 const closeModal = () => {
   open.value = false
-  addTitle.value = ''
-  addContent.value = ''
+  formRef.value.resetFields()
 }
 
 const handleOk = () => {
+  console.log(formState)
   closeModal()
 }
 
@@ -101,12 +125,20 @@ const handleCancel = () => {
   closeModal()
 }
 
-const addTitle = ref()
+interface FormState {
+  title: string
+  content: string
+}
 
-const addContent = ref()
+const formState = reactive<FormState>({
+  title: '',
+  content: '',
+})
 </script>
 <style scoped lang="scss">
 @use 'layout';
+@use 'font';
+@use 'color';
 
 .view-layout-content {
   margin: 16px 8px 16px 16px;
@@ -121,5 +153,17 @@ const addContent = ref()
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>

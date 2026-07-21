@@ -2,11 +2,11 @@
   <div class="note-card-container">
     <a-card class="note-card" :bordered="false" :hoverable="true">
       <template #title>
-        <div class="note-card-title">
+        <div class="note-card-title font-text-label">
           <p>{{ props.title }}</p>
         </div>
       </template>
-      <div class="note-card-content">
+      <div class="note-card-content font-text-normal">
         <p>{{ props.content }}</p>
       </div>
       <template #actions>
@@ -122,10 +122,6 @@ const deleteNoteCard = () => {
 }
 
 .note-card-title {
-  color: color.$light-text-primary;
-  font-size: font.font-size('large');
-  font-weight: font.font-weight('medium');
-
   p {
     width: 100%;
     overflow: hidden;
@@ -137,9 +133,6 @@ const deleteNoteCard = () => {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  color: color.$light-text-primary;
-  font-size: font.font-size('normal');
-  font-weight: font.font-weight('normal');
 
   white-space: pre-wrap;
   word-break: break-word;

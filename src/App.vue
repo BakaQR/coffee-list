@@ -1,43 +1,59 @@
 <template>
-  <div class="app-container">
-    <a-layout class="app-layout">
-      <a-layout-sider
-        v-model:collapsed="collapsed"
-        theme="light"
-        collapsed-width="60"
-        :trigger="null"
-        collapsible
-        class="app-layout-sider"
-      >
-        <div class="app-logo" />
-        <a-menu
-          v-model:selected-keys="selectedKeys"
-          mode="inline"
-          @click="handleMenuRouterTo"
+  <a-config-provider
+    :theme="{
+      token: {
+        borderRadius: themeState.borderRadius,
+        colorPrimary: themeState.colorPrimary,
+        fontSize: themeState.fontSize,
+      },
+    }"
+  >
+    <div class="app-container">
+      <a-layout class="app-layout">
+        <a-layout-sider
+          v-model:collapsed="collapsed"
+          theme="light"
+          collapsed-width="60"
+          :trigger="null"
+          collapsible
+          class="app-layout-sider"
         >
-          <a-menu-item key="/" :title="pageNoteCardTitle">
-            <BookOutlined />
-            <span>便签</span>
-          </a-menu-item>
-          <a-menu-item key="/settings" :title="pageSettingsTitle">
-            <SettingOutlined />
-            <span>设置</span>
-          </a-menu-item>
-        </a-menu>
-      </a-layout-sider>
-      <a-layout>
-        <!-- router view -->
-        <router-view />
-        <!-- router view -->
+          <div class="app-logo" />
+          <a-menu
+            v-model:selected-keys="selectedKeys"
+            mode="inline"
+            @click="handleMenuRouterTo"
+          >
+            <a-menu-item key="/" :title="pageNoteCardTitle">
+              <BookOutlined />
+              <span>便签</span>
+            </a-menu-item>
+            <a-menu-item key="/settings" :title="pageSettingsTitle">
+              <SettingOutlined />
+              <span>设置</span>
+            </a-menu-item>
+          </a-menu>
+        </a-layout-sider>
+        <a-layout>
+          <!-- router view -->
+          <router-view />
+          <!-- router view -->
+        </a-layout>
       </a-layout>
-    </a-layout>
-  </div>
+    </div>
+  </a-config-provider>
 </template>
 
 <script setup lang="ts">
 import router from './router'
 import { computed, onMounted, ref } from 'vue'
 import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue'
+
+const themeState = ref({
+  colorPrimary: '#2592ff',
+  fontSize: 15,
+  borderRadius: 6,
+})
 
 const collapsed = ref<boolean>(true)
 const selectedKeys = ref<string[]>(['/'])

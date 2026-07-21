@@ -3,7 +3,7 @@
     <a-layout-header class="view-layout-header">
       <a-row style="width: 100%" justify="space-between" align="middle">
         <a-col :span="2" style="text-align: center">
-          <span class="view-layout-header-text">设置</span>
+          <span class="font-text-title">设置</span>
         </a-col>
         <a-col :span="2" style="text-align: center">
           <!-- <a-button>按钮</a-button> -->
@@ -13,15 +13,17 @@
     <a-layout-content class="view-layout-content">
       <a-card style="margin-bottom: 16px" :bordered="false">
         <template #title>
-          <p class="setting-title">系统设置</p>
+          <p class="font-text-label">系统设置</p>
         </template>
         <SwitchOption>
           <template #description>
-            图标文字提示，鼠标悬停在右边图标查看效果。
-            <a-tooltip :color="`blue`">
-              <template v-if="switchIconTooltip" #title>添加便签</template>
-              <a-button type="text" size="large" :icon="h(FileAddOutlined)" />
-            </a-tooltip>
+            <div class="font-text-normal">
+              <span>图标文字提示，鼠标悬停在右边图标查看效果。</span>
+              <a-tooltip :color="`blue`">
+                <template v-if="switchIconTooltip" #title>添加便签</template>
+                <a-button type="text" size="large" :icon="h(FileAddOutlined)" />
+              </a-tooltip>
+            </div>
           </template>
           <template #switch>
             <a-switch v-model:checked="switchIconTooltip" />
@@ -51,10 +53,5 @@ const switchIconTooltip = computed({
 </script>
 <style scoped lang="scss">
 @use 'layout';
-@use 'color' as color;
 @use 'font' as font;
-
-.setting-title {
-  color: color.$light-primary;
-}
 </style>

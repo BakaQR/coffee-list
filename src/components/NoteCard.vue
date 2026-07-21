@@ -2,9 +2,13 @@
   <div class="note-card-container">
     <a-card class="note-card" :bordered="false" :hoverable="true">
       <template #title>
-        <p class="note-card-title">{{ props.title }}</p>
+        <div class="note-card-title">
+          <p>{{ props.title }}</p>
+        </div>
       </template>
-      <p class="note-card-content">{{ props.content }}</p>
+      <div class="note-card-content">
+        <p>{{ props.content }}</p>
+      </div>
       <template #actions>
         <a-tooltip
           v-if="!isCheck"
@@ -67,8 +71,8 @@ const storeSettings = useSettingsStore()
 
 const props = defineProps({
   id: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: '0',
   },
   title: {
     type: String,
@@ -106,12 +110,7 @@ const deleteNoteCard = () => {
 @use 'font' as font;
 
 .note-card-container {
-  width: 220px;
-}
-
-.note-card-title {
-  color: color.$light-text-primary;
-  font-weight: font.font-weight('medium');
+  width: 240px;
 }
 
 .check-icon:hover :deep(svg) {
@@ -122,18 +121,32 @@ const deleteNoteCard = () => {
   color: #ff7875;
 }
 
+.note-card-title {
+  color: color.$light-text-primary;
+  font-size: font.font-size('large');
+  font-weight: font.font-weight('medium');
+
+  p {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .note-card-content {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  display: -webkit-box;
   color: color.$light-text-primary;
+  font-size: font.font-size('normal');
+  font-weight: font.font-weight('normal');
 
+  white-space: pre-wrap;
+  word-break: break-word;
+  display: -webkit-box;
   line-clamp: 5;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
-  word-break: break-word;
-  line-height: 1.5;
 }
 </style>

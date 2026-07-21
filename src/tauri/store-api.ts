@@ -1,4 +1,5 @@
 import { load } from '@tauri-apps/plugin-store'
+import { nanoid } from 'nanoid'
 
 // 设置
 const storeSettings = await load('settings.json')
@@ -39,7 +40,7 @@ const initialSettingsData = async () => {
 
 // 便签卡片数据
 export interface I_NoteCard {
-  id: number
+  id: string
   title: string
   content: string
 }
@@ -49,14 +50,18 @@ export const getNoteCardList = async () => {
 export const setNoteCardList = async (list: I_NoteCard[]) => {
   await storeNoteCards.set('list', list)
 }
+export const addNoteCard = async (item: I_NoteCard) => {
+  const list = await getNoteCardList()
+  list.push(item)
+}
 const initialNoteCardData = async () => {
   await storeSettings.set('id', 'note-card-list')
   // 默认便签数据
   await storeNoteCards.set('list', [
     {
-      id: 9999,
+      id: nanoid(10),
       title: '默认便签',
-      content: '可以拖动便签调整位置',
+      content: '便签下方是功能区按钮\n可以左键拖动便签调整位置',
     },
   ])
 }

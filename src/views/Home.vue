@@ -45,15 +45,19 @@
 
     <a-modal
       :open="open"
-      title="添加便签"
       centered
+      title="添加便签"
+      cancel-text="取消"
+      ok-text="确定"
+      style="width: 60%"
+      destroy-on-close
+      :closable="false"
       @ok="handleOk"
       @cancel="handleCancel"
     >
-      <div @contextmenu.prevent>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      <div>
+        <a-input v-model:value="addTitle" placeholder="请输入便签标题" />
+        <a-textarea v-model:value="addContent" placeholder="请输入便签内容" />
       </div>
     </a-modal>
   </div>
@@ -77,19 +81,29 @@ const list = computed({
   set: async (nv) => await storeNoteCard.saveNoteCardList(nv),
 })
 
+const open = ref(false)
+
 const addNoteCard = () => {
   open.value = true
 }
 
-const open = ref(false)
+const closeModal = () => {
+  open.value = false
+  addTitle.value = ''
+  addContent.value = ''
+}
 
 const handleOk = () => {
-  open.value = false
+  closeModal()
 }
 
 const handleCancel = () => {
-  open.value = false
+  closeModal()
 }
+
+const addTitle = ref()
+
+const addContent = ref()
 </script>
 <style scoped lang="scss">
 @use 'layout';

@@ -6,5 +6,7 @@
 ## Build 
 
 `pnpm tauri build`
+
 输出目录：
+
 `H:\Vue\coffee-list\src-tauri\target\release\tauri-app.exe`

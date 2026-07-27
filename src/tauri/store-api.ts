@@ -43,6 +43,7 @@ export interface I_NoteCard {
   id: string
   title: string
   content: string
+  isCheck: boolean
 }
 export const getNoteCardList = async () => {
   return (await storeNoteCards.get('list')) as unknown as I_NoteCard[]
@@ -62,6 +63,7 @@ const initialNoteCardData = async () => {
       id: nanoid(10),
       title: '默认便签',
       content: '便签下方是功能区按钮\n可以左键拖动便签调整位置',
+      isCheck: false,
     },
   ])
 }

@@ -3,6 +3,12 @@
     <a-card class="note-card" :bordered="false" :hoverable="true">
       <template #title>
         <div class="note-card-title font-text-label">
+          <CheckCircleTwoTone
+            two-tone-color="#00b96b"
+            class="is-check-icon"
+            :class="[isPulsing]"
+            :style="initStyle"
+          />
           <p>{{ props.title }}</p>
         </div>
       </template>
@@ -62,11 +68,13 @@ import {
   CloseOutlined,
   EditOutlined,
   DeleteOutlined,
+  CheckCircleTwoTone,
 } from '@ant-design/icons-vue'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
+import { I_NoteCard } from '@renderer/tauri/store-api'
 
 const storeSettings = useSettingsStore()
 const storeNoteCard = useNoteCardStore()
@@ -84,27 +92,63 @@ const props = defineProps({
     type: String,
     default: '便签内容',
   },
+  isCheck: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const isCheck = ref(false)
+const emit = defineEmits(['edit-note-card'])
+
+const isCheck = ref(props.isCheck)
 
 const checkNoteCard = () => {
-  console.log('check note card')
   isCheck.value = true
+  const item: I_NoteCard = {
+    id: props.id,
+    title: props.title,
+    content: props.content,
+    isCheck: isCheck.value,
+  }
+  storeNoteCard.updateNoteCard(item)
 }
 
 const unCheckNoteCard = () => {
-  console.log('un check note card')
   isCheck.value = false
+  const item: I_NoteCard = {
+    id: props.id,
+    title: props.title,
+    content: props.content,
+    isCheck: isCheck.value,
+  }
+  storeNoteCard.updateNoteCard(item)
 }
 
 const editNoteCard = () => {
-  console.log('edit note card')
+  const item: I_NoteCard = {
+    id: props.id,
+    title: props.title,
+    content: props.content,
+    isCheck: props.isCheck,
+  }
+  emit('edit-note-card', item)
 }
 
 const deleteNoteCard = () => {
   storeNoteCard.deleteNoteCard(props.id)
 }
+
+// 用于控制图标动画效果
+const isPulsing = ref('')
+
+watch(isCheck, (nv) => {
+  isPulsing.value = nv ? 'pulse-in' : 'pulse-out'
+})
+
+const initStyle = computed(() => ({
+  width: isCheck.value ? '20px' : '0px',
+  margin: isCheck.value ? '0 8px 0 0' : '0px',
+}))
 </script>
 
 <style scoped lang="scss">
@@ -124,6 +168,11 @@ const deleteNoteCard = () => {
 }
 
 .note-card-title {
+  display: flex;
+  // gap: 8px;
+  justify-content: center;
+  align-items: center;
+
   p {
     width: 100%;
     overflow: hidden;
@@ -143,5 +192,52 @@ const deleteNoteCard = () => {
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+}
+
+.is-check-icon {
+  width: 0px;
+  transition: all 0.1s;
+}
+
+@keyframes pulse-in {
+  0% {
+    width: 0;
+    opacity: 0;
+    margin-right: 0px;
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+    margin-left: 4px;
+  }
+  100% {
+    width: 20px;
+    opacity: 1;
+    margin-right: 8px;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-out {
+  0% {
+    width: 20px;
+    opacity: 1;
+    margin-right: 8px;
+    transform: scale(1);
+  }
+  100% {
+    width: 0;
+    opacity: 0;
+    margin-right: 0px;
+    transform: scale(0);
+  }
+}
+
+.pulse-in {
+  animation: pulse-in 0.3s ease-out forwards;
+}
+
+.pulse-out {
+  animation: pulse-out 0.3s ease-out forwards;
 }
 </style>

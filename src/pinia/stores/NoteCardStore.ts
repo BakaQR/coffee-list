@@ -29,11 +29,22 @@ export const useNoteCardStore = defineStore('note-card-store', () => {
     saveNoteCardList(list.value)
   }
 
+  const updateNoteCard = async (item: I_NoteCard) => {
+    const i = list.value.find((i) => i.id === item.id)
+    if (i) {
+      Object.assign(i, item)
+      saveNoteCardList(list.value)
+    } else {
+      console.log('更新 note card 出错: ', item)
+    }
+  }
+
   return {
     list,
     updateNoteCardList,
     saveNoteCardList,
     addNoteCard,
     deleteNoteCard,
+    updateNoteCard,
   }
 })

@@ -39,6 +39,8 @@
             :key="item.id"
             :title="item.title"
             :content="item.content"
+            :is-check="item.isCheck"
+            @edit-note-card="handleEditNoteCard"
           />
         </VueDraggable>
       </el-scrollbar>
@@ -57,7 +59,8 @@
     >
       <div class="modal-container">
         <div class="modal-header">
-          <p class="font-text-title">添加便签</p>
+          <p v-if="!isEdit" class="font-text-title">添加便签</p>
+          <p v-else class="font-text-title">修改便签</p>
         </div>
         <div class="modal-body">
           <a-form
@@ -125,24 +128,34 @@ watch(
 const open = ref(false)
 
 const addNoteCard = () => {
+  formState.id = ''
+  formState.title = ''
+  formState.content = ''
+  formState.isCheck = false
   open.value = true
-}
-
-const closeModal = () => {
-  open.value = false
-  formRef.value.resetFields()
 }
 
 const handleOk = () => {
   formRef.value
     .validate()
     .then(() => {
-      const noteItem: I_NoteCard = {
-        id: nanoid(10),
-        title: formState.title,
-        content: formState.content,
+      if (isEdit.value) {
+        const noteItem: I_NoteCard = {
+          id: formState.id,
+          title: formState.title,
+          content: formState.content,
+          isCheck: formState.isCheck,
+        }
+        storeNoteCard.updateNoteCard(noteItem)
+      } else {
+        const noteItem: I_NoteCard = {
+          id: nanoid(10),
+          title: formState.title,
+          content: formState.content,
+          isCheck: formState.isCheck,
+        }
+        storeNoteCard.addNoteCard(noteItem)
       }
-      storeNoteCard.addNoteCard(noteItem)
       closeModal()
     })
     .catch((error: unknown) => {
@@ -154,14 +167,37 @@ const handleCancel = () => {
   closeModal()
 }
 
+const isEdit = ref(false)
+
+const handleEditNoteCard = (item: I_NoteCard) => {
+  isEdit.value = true
+  formState.id = item.id
+  formState.title = item.title
+  formState.content = item.content
+  formState.isCheck = item.isCheck
+  open.value = true
+}
+
+const closeModal = () => {
+  open.value = false
+  isEdit.value = false
+  formRef.value.resetFields()
+}
+
 interface FormState {
+  // id 只在编辑模式下使用 添加模式下直接使用 nanoid
+  // isCheck 只作为传递使用 具体在组件内部修改该值
+  id: string
   title: string
   content: string
+  isCheck: boolean
 }
 
 const formState = reactive<FormState>({
+  id: '',
   title: '',
   content: '',
+  isCheck: false,
 })
 
 const rules: Record<string, Rule[]> = {

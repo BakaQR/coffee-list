@@ -13,10 +13,10 @@
     "windows": [
       {
         "title": "Coffee List",
-        "width": 800,
+        "width": 850,
         "height": 600,
+        "minWidth": 850,
         "minHeight": 600,
-        "minWidth": 800,
         "maximizable": false,
         "theme": "Light"
       }

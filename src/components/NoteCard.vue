@@ -66,8 +66,10 @@ import {
 import { ref } from 'vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
+import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 
 const storeSettings = useSettingsStore()
+const storeNoteCard = useNoteCardStore()
 
 const props = defineProps({
   id: {
@@ -101,7 +103,7 @@ const editNoteCard = () => {
 }
 
 const deleteNoteCard = () => {
-  console.log('delete note card')
+  storeNoteCard.deleteNoteCard(props.id)
 }
 </script>
 

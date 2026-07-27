@@ -31,6 +31,7 @@
           :force-fallback="true"
           ghost-class="ghost-item"
           :fallback-tolerance="50"
+          @end="onDragEnd"
         >
           <NoteCard
             v-for="item in list"
@@ -62,6 +63,7 @@
           <a-form
             ref="formRef"
             :model="formState"
+            :rules="rules"
             autocomplete="off"
             layout="vertical"
           >
@@ -89,21 +91,36 @@
 import NoteCard from '@renderer/components/NoteCard.vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 
-import { computed, h, reactive, ref } from 'vue'
+import { h, onMounted, reactive, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
+import { I_NoteCard } from '@renderer/tauri/store-api'
+import { nanoid } from 'nanoid'
+import { Rule } from 'ant-design-vue/es/form'
 
 const storeNoteCard = useNoteCardStore()
 const storeSettings = useSettingsStore()
 
 const formRef = ref()
 
-// 从 pinia 中获取 note-card 数据进行双向绑定
-const list = computed({
-  get: () => storeNoteCard.list,
-  set: async (nv) => await storeNoteCard.saveNoteCardList(nv),
+const list = ref<I_NoteCard[]>([])
+
+onMounted(() => {
+  list.value = storeNoteCard.list
 })
+
+const onDragEnd = () => {
+  storeNoteCard.saveNoteCardList(list.value)
+}
+
+watch(
+  () => storeNoteCard.list,
+  (nv) => {
+    list.value = nv
+  },
+  { deep: true }
+)
 
 const open = ref(false)
 
@@ -117,8 +134,20 @@ const closeModal = () => {
 }
 
 const handleOk = () => {
-  console.log(formState)
-  closeModal()
+  formRef.value
+    .validate()
+    .then(() => {
+      const noteItem: I_NoteCard = {
+        id: nanoid(10),
+        title: formState.title,
+        content: formState.content,
+      }
+      storeNoteCard.addNoteCard(noteItem)
+      closeModal()
+    })
+    .catch((error: unknown) => {
+      console.log('校验失败: ', error)
+    })
 }
 
 const handleCancel = () => {
@@ -134,7 +163,25 @@ const formState = reactive<FormState>({
   title: '',
   content: '',
 })
+
+const rules: Record<string, Rule[]> = {
+  title: [
+    {
+      required: true,
+      message: '请输入便签标题',
+      trigger: 'change',
+    },
+  ],
+  content: [
+    {
+      required: true,
+      message: '请输入便签内容',
+      trigger: 'change',
+    },
+  ],
+}
 </script>
+
 <style scoped lang="scss">
 @use 'layout';
 @use 'font';

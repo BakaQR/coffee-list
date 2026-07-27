@@ -19,9 +19,21 @@ export const useNoteCardStore = defineStore('note-card-store', () => {
     await updateNoteCardList()
   }
 
+  const addNoteCard = async (item: I_NoteCard) => {
+    list.value.push(item)
+    saveNoteCardList(list.value)
+  }
+
+  const deleteNoteCard = async (id: string) => {
+    list.value = list.value.filter((item) => item.id !== id)
+    saveNoteCardList(list.value)
+  }
+
   return {
     list,
     updateNoteCardList,
     saveNoteCardList,
+    addNoteCard,
+    deleteNoteCard,
   }
 })

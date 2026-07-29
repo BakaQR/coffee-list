@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/main">
+  <Fragment>
+    <!-- 用 SetProperty 在 AppSearch 之后重定向 INSTALLFOLDER -->
+    <SetProperty Id="INSTALLFOLDER"
+                Value="[INSTALLFOLDER]coffee-list"
+                After="AppSearch">
+      NOT INSTALLFOLDER
+    </SetProperty>
+  </Fragment>
+</Wix>

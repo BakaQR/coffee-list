@@ -26,8 +26,16 @@
     }
   },
   "bundle": {
+    "publisher": "BakaQR",
     "active": true,
-    "targets": "all",
+    "targets": "nsis",
+    "windows": {
+      "nsis": {
+        "installMode": "both",
+        "languages": ["SimpChinese"],
+        "displayLanguageSelector": false
+      }
+    },
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

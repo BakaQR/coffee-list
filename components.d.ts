@@ -29,10 +29,11 @@ declare module 'vue' {
     ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
+    ButtonOption: typeof import('./src/components/setting/ButtonOption.vue')['default']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     NoteCard: typeof import('./src/components/NoteCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SwitchOption: typeof import('./src/components/SwitchOption.vue')['default']
+    SwitchOption: typeof import('./src/components/setting/SwitchOption.vue')['default']
   }
 }

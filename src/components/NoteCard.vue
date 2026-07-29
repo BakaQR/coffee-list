@@ -6,8 +6,11 @@
           <CheckCircleTwoTone
             two-tone-color="#00b96b"
             class="is-check-icon"
-            :class="[isPulsing]"
-            :style="initStyle"
+            :class="{
+              'pulse-in': pulseIn,
+              'pulse-out': pulseOut,
+              'is-check-icon-active': isCheck,
+            }"
           />
           <p>{{ props.title }}</p>
         </div>
@@ -70,7 +73,7 @@ import {
   DeleteOutlined,
   CheckCircleTwoTone,
 } from '@ant-design/icons-vue'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
@@ -139,16 +142,22 @@ const deleteNoteCard = () => {
 }
 
 // 用于控制图标动画效果
-const isPulsing = ref('')
+const pulseIn = ref(false)
+const pulseOut = ref(false)
 
 watch(isCheck, (nv) => {
-  isPulsing.value = nv ? 'pulse-in' : 'pulse-out'
+  if (nv) {
+    pulseIn.value = true
+    setTimeout(() => {
+      pulseIn.value = false
+    }, 300)
+  } else {
+    pulseOut.value = true
+    setTimeout(() => {
+      pulseOut.value = false
+    }, 300)
+  }
 })
-
-const initStyle = computed(() => ({
-  width: isCheck.value ? '20px' : '0px',
-  margin: isCheck.value ? '0 8px 0 0' : '0px',
-}))
 </script>
 
 <style scoped lang="scss">
@@ -196,7 +205,15 @@ const initStyle = computed(() => ({
 
 .is-check-icon {
   width: 0px;
-  transition: all 0.1s;
+  opacity: 0;
+  margin-right: 0px;
+  // transition: all 0.3s;
+}
+
+.is-check-icon-active {
+  width: 20px;
+  opacity: 1;
+  margin-right: 8px;
 }
 
 @keyframes pulse-in {

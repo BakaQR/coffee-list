@@ -4,15 +4,17 @@
     justify="space-between"
     align="middle"
   >
-    <a-col :span="22">
+    <a-col :span="21">
       <slot name="description">
         <span>选项文字描述</span>
       </slot>
     </a-col>
-    <a-col :span="2">
-      <slot name="switch">
-        <a-switch />
-      </slot>
+    <a-col :span="3">
+      <div class="func-area">
+        <slot name="switch">
+          <a-switch />
+        </slot>
+      </div>
     </a-col>
   </a-row>
 </template>
@@ -21,4 +23,10 @@
 // 使用 a-switch 的设置选项
 </script>
 
-<style scoped></style>
+<style scoped>
+.func-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

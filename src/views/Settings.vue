@@ -46,8 +46,8 @@
 <script setup lang="ts">
 import { computed, h, ref } from 'vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
-import SwitchOption from '@renderer/components/setting/SwitchOption.vue'
-import ButtonOption from '@renderer/components/setting/ButtonOption.vue'
+import SwitchOption from '@renderer/components/settings/SwitchOption.vue'
+import ButtonOption from '@renderer/components/settings/ButtonOption.vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
 import { SettingsOptions } from '@renderer/tauri/store-api'

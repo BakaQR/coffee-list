@@ -37,4 +37,5 @@ panic = "abort"     # 通过禁用 panic 处理程序来提高性能
 strip = true        # 确保移除调试符号
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-single-instance = "2"
 tauri-plugin-window-state = "2"

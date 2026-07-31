@@ -2,24 +2,24 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import {
-  I_NoteCard,
+  NoteCardModel,
   getNoteCardList,
   setNoteCardList,
 } from '@renderer/tauri/store-api'
 
 export const useNoteCardStore = defineStore('note-card-store', () => {
-  const list = ref<I_NoteCard[]>([])
+  const list = ref<NoteCardModel[]>([])
 
   const updateNoteCardList = async () => {
     list.value = await getNoteCardList()
   }
 
-  const saveNoteCardList = async (list: I_NoteCard[] | undefined) => {
+  const saveNoteCardList = async (list: NoteCardModel[] | undefined) => {
     if (list !== undefined) await setNoteCardList(list)
     await updateNoteCardList()
   }
 
-  const addNoteCard = async (item: I_NoteCard) => {
+  const addNoteCard = async (item: NoteCardModel) => {
     list.value.push(item)
     saveNoteCardList(list.value)
   }
@@ -29,7 +29,7 @@ export const useNoteCardStore = defineStore('note-card-store', () => {
     saveNoteCardList(list.value)
   }
 
-  const updateNoteCard = async (item: I_NoteCard) => {
+  const updateNoteCard = async (item: NoteCardModel) => {
     const i = list.value.find((i) => i.id === item.id)
     if (i) {
       Object.assign(i, item)

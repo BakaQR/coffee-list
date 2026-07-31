@@ -22,7 +22,7 @@
         <a-tooltip
           v-if="!isCheck"
           :color="`#00b96b`"
-          :open="storeSettings.iconTooltip ? undefined : false"
+          :open="storeSettings.options.iconTooltip ? undefined : false"
         >
           <template #title>已完成</template>
           <CheckOutlined
@@ -34,7 +34,7 @@
         <a-tooltip
           v-if="isCheck"
           :color="`#00b96b`"
-          :open="storeSettings.iconTooltip ? undefined : false"
+          :open="storeSettings.options.iconTooltip ? undefined : false"
         >
           <template #title>取消完成标记</template>
           <CloseOutlined
@@ -45,14 +45,14 @@
         </a-tooltip>
         <a-tooltip
           :color="`blue`"
-          :open="storeSettings.iconTooltip ? undefined : false"
+          :open="storeSettings.options.iconTooltip ? undefined : false"
         >
           <template #title>编辑</template>
           <EditOutlined key="edit" @click="editNoteCard" />
         </a-tooltip>
         <a-tooltip
           :color="`red`"
-          :open="storeSettings.iconTooltip ? undefined : false"
+          :open="storeSettings.options.iconTooltip ? undefined : false"
         >
           <template #title>删除</template>
           <DeleteOutlined
@@ -75,9 +75,9 @@ import {
 } from '@ant-design/icons-vue'
 import { ref, watch } from 'vue'
 
-import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
+import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
-import { I_NoteCard } from '@renderer/tauri/store-api'
+import { NoteCardModel } from '@renderer/tauri/store-api'
 
 const storeSettings = useSettingsStore()
 const storeNoteCard = useNoteCardStore()
@@ -107,7 +107,7 @@ const isCheck = ref(props.isCheck)
 
 const checkNoteCard = () => {
   isCheck.value = true
-  const item: I_NoteCard = {
+  const item: NoteCardModel = {
     id: props.id,
     title: props.title,
     content: props.content,
@@ -118,7 +118,7 @@ const checkNoteCard = () => {
 
 const unCheckNoteCard = () => {
   isCheck.value = false
-  const item: I_NoteCard = {
+  const item: NoteCardModel = {
     id: props.id,
     title: props.title,
     content: props.content,
@@ -128,7 +128,7 @@ const unCheckNoteCard = () => {
 }
 
 const editNoteCard = () => {
-  const item: I_NoteCard = {
+  const item: NoteCardModel = {
     id: props.id,
     title: props.title,
     content: props.content,

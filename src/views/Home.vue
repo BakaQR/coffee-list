@@ -8,7 +8,7 @@
         <a-col :span="2" style="text-align: center">
           <a-tooltip
             :color="`blue`"
-            :open="storeSettings.iconTooltip ? undefined : false"
+            :open="storeSettings.options.iconTooltip ? undefined : false"
           >
             <template #title>添加便签</template>
             <a-button
@@ -97,8 +97,8 @@ import { FileAddOutlined } from '@ant-design/icons-vue'
 import { h, onMounted, reactive, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
-import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
-import { I_NoteCard } from '@renderer/tauri/store-api'
+import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
+import { NoteCardModel } from '@renderer/tauri/store-api'
 import { nanoid } from 'nanoid'
 import { Rule } from 'ant-design-vue/es/form'
 
@@ -107,7 +107,7 @@ const storeSettings = useSettingsStore()
 
 const formRef = ref()
 
-const list = ref<I_NoteCard[]>([])
+const list = ref<NoteCardModel[]>([])
 
 onMounted(() => {
   list.value = storeNoteCard.list
@@ -140,7 +140,7 @@ const handleOk = () => {
     .validate()
     .then(() => {
       if (isEdit.value) {
-        const noteItem: I_NoteCard = {
+        const noteItem: NoteCardModel = {
           id: formState.id,
           title: formState.title,
           content: formState.content,
@@ -148,7 +148,7 @@ const handleOk = () => {
         }
         storeNoteCard.updateNoteCard(noteItem)
       } else {
-        const noteItem: I_NoteCard = {
+        const noteItem: NoteCardModel = {
           id: nanoid(10),
           title: formState.title,
           content: formState.content,
@@ -169,7 +169,7 @@ const handleCancel = () => {
 
 const isEdit = ref(false)
 
-const handleEditNoteCard = (item: I_NoteCard) => {
+const handleEditNoteCard = (item: NoteCardModel) => {
   isEdit.value = true
   formState.id = item.id
   formState.title = item.title

@@ -63,26 +63,20 @@ const handleMenuRouterTo = (e: { key: string }) => {
   router.push(e.key)
 }
 
-import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
-import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
-const storeNoteCard = useNoteCardStore()
+import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 const storeSettings = useSettingsStore()
 
 onMounted(async () => {
-  // 初始化数据
-  await storeNoteCard.updateNoteCardList()
-  await storeSettings.updateSettingsData()
-
   window.addEventListener('mouseup', (e) => {
     if (e.button === 3 || e.button === 4) e.preventDefault()
   })
 })
 
 const pageNoteCardTitle = computed(() =>
-  storeSettings.iconTooltip ? '便签' : ''
+  storeSettings.options.iconTooltip ? '便签' : ''
 )
 const pageSettingsTitle = computed(() =>
-  storeSettings.iconTooltip ? '设置' : ''
+  storeSettings.options.iconTooltip ? '设置' : ''
 )
 </script>
 

@@ -3,15 +3,19 @@ import App from '@renderer/App.vue'
 import router from '@renderer/router'
 import { pinia, initializeStore } from '@renderer/pinia'
 
-// 引入全局样式
+// 全局样式
 import '@renderer/assets/style/root.scss'
 
-// 数据初始化
+// 初次运行时数据初始化
 import { initialStore } from '@renderer/tauri/store-api'
 await initialStore()
 
-// 窗口管理 (包含系统托盘)
-import '@renderer/tauri/window-manager'
+// 系统托盘
+import { updateTrayState } from '@renderer/tauri/tray-manager'
+updateTrayState()
+
+// 标题栏按钮
+import '@renderer/tauri/title-bar'
 
 const app = createApp(App)
 

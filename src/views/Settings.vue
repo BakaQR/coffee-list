@@ -16,24 +16,23 @@
           <p class="font-text-label">系统设置</p>
         </template>
         <div class="setting-container">
-          <SwitchOption>
+          <SwitchOption v-model:checked="switchIconTooltip">
             <template #description>
-              <div class="font-text-normal">
-                <span>图标文字提示，鼠标悬停在右边图标查看效果。</span>
-                <a-tooltip :color="`blue`">
-                  <template v-if="switchIconTooltip" #title>添加便签</template>
-                  <a-button
-                    type="text"
-                    size="large"
-                    :icon="h(FileAddOutlined)"
-                  />
-                </a-tooltip>
-              </div>
-            </template>
-            <template #switch>
-              <a-switch v-model:checked="switchIconTooltip" />
+              <span>图标文字提示，鼠标悬停在右边图标查看效果。</span>
+              <a-tooltip :color="`blue`">
+                <template v-if="switchIconTooltip" #title>添加便签</template>
+                <a-button type="text" size="large" :icon="h(FileAddOutlined)" />
+              </a-tooltip>
             </template>
           </SwitchOption>
+          <SwitchOption
+            v-model:checked="switchShowTray"
+            :descriptions="'显示系统托盘'"
+          />
+          <SwitchOption
+            v-model:checked="switchMinimize"
+            :descriptions="'最小化到系统托盘'"
+          />
           <ButtonOption> </ButtonOption>
         </div>
       </a-card>
@@ -49,16 +48,29 @@ import { FileAddOutlined } from '@ant-design/icons-vue'
 import SwitchOption from '@renderer/components/settings/SwitchOption.vue'
 import ButtonOption from '@renderer/components/settings/ButtonOption.vue'
 
-import { useSettingsStore } from '@renderer/pinia/stores/SettingsStore'
-import { SettingsOptions } from '@renderer/tauri/store-api'
+import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { enqueueNotification } from '@renderer/tauri/notification-api'
+
 const storeSettings = useSettingsStore()
 
 const switchIconTooltip = computed({
-  get: () => storeSettings.iconTooltip,
-  set: async (v: string | number | boolean) => {
-    await storeSettings.setSettingsOptionsByName(SettingsOptions.IconTooltip, v)
-    await storeSettings.updateIconTooltip()
+  get: () => storeSettings.options.iconTooltip,
+  set: async (v: boolean) => {
+    await storeSettings.setSettingOptionsByKey('iconTooltip', v)
+  },
+})
+
+const switchShowTray = computed({
+  get: () => storeSettings.options.showTray,
+  set: async (v: boolean) => {
+    await storeSettings.setSettingOptionsByKey('showTray', v)
+  },
+})
+
+const switchMinimize = computed({
+  get: () => storeSettings.options.minimize,
+  set: async (v: boolean) => {
+    await storeSettings.setSettingOptionsByKey('minimize', v)
   },
 })
 

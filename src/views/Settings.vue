@@ -2,10 +2,10 @@
   <div class="view-container">
     <a-layout-header class="view-layout-header">
       <a-row style="width: 100%" justify="space-between" align="middle">
-        <a-col :span="2" style="text-align: center">
+        <a-col :span="2" style="text-align: left">
           <span class="font-text-title">设置</span>
         </a-col>
-        <a-col :span="2" style="text-align: center">
+        <a-col :span="2" style="text-align: right">
           <!-- <a-button>按钮</a-button> -->
         </a-col>
       </a-row>
@@ -33,17 +33,19 @@
             v-model:checked="switchMinimize"
             :descriptions="'最小化到系统托盘'"
           />
-          <ButtonOption> </ButtonOption>
+          <ButtonOption
+            :button-text="'发送通知'"
+            :descriptions="'测试系统通知，如无显示，请检查「设置-系统-通知」是否允许程序发送通知'"
+            @button:click="testNotification"
+          />
         </div>
       </a-card>
-
-      <a-button @click="testNotification">{{ testNotifi }}</a-button>
     </a-layout-content>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, h, ref } from 'vue'
+import { computed, h } from 'vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 import SwitchOption from '@renderer/components/settings/SwitchOption.vue'
 import ButtonOption from '@renderer/components/settings/ButtonOption.vue'
@@ -74,14 +76,8 @@ const switchMinimize = computed({
   },
 })
 
-const testNotifi = ref('click')
-
 const testNotification = async () => {
-  if (!(await enqueueNotification('标题', '内容'))) {
-    testNotifi.value = 'failed'
-  } else {
-    testNotifi.value = 'success'
-  }
+  await enqueueNotification('测试通知是否正常发送', '现已发送成功！')
 }
 </script>
 <style scoped lang="scss">

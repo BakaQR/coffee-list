@@ -2,10 +2,10 @@
   <div class="view-container">
     <a-layout-header class="view-layout-header">
       <a-row style="width: 100%" justify="space-between" align="middle">
-        <a-col :span="2" style="text-align: center">
+        <a-col :span="2" style="text-align: left">
           <span class="font-text-title"> 便签 </span>
         </a-col>
-        <a-col :span="2" style="text-align: center">
+        <a-col :span="2" style="text-align: right">
           <a-tooltip
             :color="`blue`"
             :open="storeSettings.options.iconTooltip ? undefined : false"
@@ -63,27 +63,47 @@
           <p v-else class="font-text-title">修改便签</p>
         </div>
         <div class="modal-body">
-          <a-form
-            ref="formRef"
-            :model="formState"
-            :rules="rules"
-            autocomplete="off"
-            layout="vertical"
-          >
-            <a-form-item label="标题" name="title">
-              <a-input
-                v-model:value="formState.title"
-                placeholder="请输入便签标题"
-              />
-            </a-form-item>
-            <a-form-item label="内容" name="content">
-              <a-textarea
-                v-model:value="formState.content"
-                placeholder="请输入便签内容"
-                :auto-size="{ minRows: 3, maxRows: 8 }"
-              />
-            </a-form-item>
-          </a-form>
+          <el-scrollbar max-height="400px" class="modal-body-scrollbar">
+            <a-form
+              ref="formRef"
+              :model="formState"
+              :rules="rules"
+              autocomplete="off"
+              layout="vertical"
+            >
+              <a-form-item label="标题" name="title">
+                <a-input
+                  v-model:value="formState.title"
+                  placeholder="请输入便签标题"
+                />
+              </a-form-item>
+              <a-form-item label="内容" name="content">
+                <a-textarea
+                  v-model:value="formState.content"
+                  placeholder="请输入便签内容"
+                  :auto-size="{ minRows: 3, maxRows: 8 }"
+                />
+              </a-form-item>
+              <a-form-item label="通知类型">
+                <a-select v-model:value="formState.notification">
+                  <a-select-option value="none">不发送</a-select-option>
+                  <a-select-option value="once">只发送一次</a-select-option>
+                  <a-select-option value="day">每日</a-select-option>
+                </a-select>
+              </a-form-item>
+              <a-form-item
+                v-if="formState.notification !== 'none'"
+                label="选择时间"
+              >
+                <a-time-picker
+                  v-model:value="formState.pickTime"
+                  format="HH:mm"
+                  value-format="HH:mm"
+                  placeholder="选择时间"
+                />
+              </a-form-item>
+            </a-form>
+          </el-scrollbar>
         </div>
       </div>
     </a-modal>
@@ -101,6 +121,7 @@ import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { NoteCardModel } from '@renderer/tauri/store-api'
 import { nanoid } from 'nanoid'
 import { Rule } from 'ant-design-vue/es/form'
+import dayjs from 'dayjs'
 
 const storeNoteCard = useNoteCardStore()
 const storeSettings = useSettingsStore()
@@ -132,6 +153,8 @@ const addNoteCard = () => {
   formState.title = ''
   formState.content = ''
   formState.isCheck = false
+  formState.notification = 'none'
+  formState.pickTime = dayjs().format('HH:mm')
   open.value = true
 }
 
@@ -139,21 +162,19 @@ const handleOk = () => {
   formRef.value
     .validate()
     .then(() => {
+      const noteItem: NoteCardModel = {
+        id: formState.id,
+        title: formState.title,
+        content: formState.content,
+        isCheck: formState.isCheck,
+        notification: formState.notification,
+        timePicker: formState.pickTime,
+      }
+      if (noteItem.timePicker === null) noteItem.timePicker = '00:00'
       if (isEdit.value) {
-        const noteItem: NoteCardModel = {
-          id: formState.id,
-          title: formState.title,
-          content: formState.content,
-          isCheck: formState.isCheck,
-        }
         storeNoteCard.updateNoteCard(noteItem)
       } else {
-        const noteItem: NoteCardModel = {
-          id: nanoid(10),
-          title: formState.title,
-          content: formState.content,
-          isCheck: formState.isCheck,
-        }
+        noteItem.id = nanoid(10)
         storeNoteCard.addNoteCard(noteItem)
       }
       closeModal()
@@ -175,6 +196,8 @@ const handleEditNoteCard = (item: NoteCardModel) => {
   formState.title = item.title
   formState.content = item.content
   formState.isCheck = item.isCheck
+  formState.notification = item.notification
+  formState.pickTime = item.timePicker
   open.value = true
 }
 
@@ -191,6 +214,8 @@ interface FormState {
   title: string
   content: string
   isCheck: boolean
+  notification: 'none' | 'once' | 'day'
+  pickTime: string
 }
 
 const formState = reactive<FormState>({
@@ -198,6 +223,8 @@ const formState = reactive<FormState>({
   title: '',
   content: '',
   isCheck: false,
+  notification: 'none',
+  pickTime: '00:00',
 })
 
 const rules: Record<string, Rule[]> = {
@@ -224,29 +251,39 @@ const rules: Record<string, Rule[]> = {
 @use 'color';
 
 .view-layout-content {
-  margin: 16px 8px 16px 16px;
+  padding: 0 4px 0 0;
 }
 
 .note-card-scrollbar {
-  // 父容器是自适应的高度，因此只能使用100vh来设置高度，100vh - 96px = 16px间距
-  height: calc(100vh - 96px);
+  height: calc(100vh - 64px);
 }
 
 .note-card-list-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: left;
   gap: 16px;
+  padding: 16px;
 }
 
 .modal-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-left: 24px;
 
   .modal-header {
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
+  .modal-body {
+    max-height: 400px;
+  }
+}
+
+.modal-body-scrollbar {
+  padding-right: 24px;
 }
 </style>

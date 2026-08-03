@@ -1,5 +1,6 @@
 <template>
   <a-config-provider
+    :locale="locale"
     :theme="{
       token: {
         borderRadius: themeState.borderRadius,
@@ -54,6 +55,9 @@ const themeState = ref({
   fontSize: 15,
   borderRadius: 6,
 })
+
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
+const locale = zhCN
 
 const collapsed = ref<boolean>(true)
 const selectedKeys = ref<string[]>(['/'])

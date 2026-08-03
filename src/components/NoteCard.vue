@@ -1,6 +1,11 @@
 <template>
   <div class="note-card-container">
-    <a-card class="note-card" :bordered="false" :hoverable="true">
+    <a-card
+      class="note-card"
+      :bordered="false"
+      :hoverable="true"
+      @click="openDetail"
+    >
       <template #title>
         <div class="note-card-title font-text-label">
           <CheckCircleTwoTone
@@ -28,7 +33,7 @@
           <CheckOutlined
             key="check"
             class="check-icon"
-            @click="checkNoteCard"
+            @click.stop="checkNoteCard"
           />
         </a-tooltip>
         <a-tooltip
@@ -40,7 +45,7 @@
           <CloseOutlined
             key="unCheck"
             class="check-icon"
-            @click="unCheckNoteCard"
+            @click.stop="unCheckNoteCard"
           />
         </a-tooltip>
         <a-tooltip
@@ -48,7 +53,7 @@
           :open="storeSettings.options.iconTooltip ? undefined : false"
         >
           <template #title>编辑</template>
-          <EditOutlined key="edit" @click="editNoteCard" />
+          <EditOutlined key="edit" @click.stop="editNoteCard" />
         </a-tooltip>
         <a-tooltip
           :color="`red`"
@@ -58,7 +63,7 @@
           <DeleteOutlined
             key="delete"
             class="delete-icon"
-            @click="deleteNoteCard"
+            @click.stop="deleteNoteCard"
           />
         </a-tooltip>
       </template>
@@ -72,12 +77,14 @@ import {
   EditOutlined,
   DeleteOutlined,
   CheckCircleTwoTone,
+  CloseCircleTwoTone,
 } from '@ant-design/icons-vue'
-import { ref, watch } from 'vue'
+import { h, PropType, ref, watch } from 'vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import { NoteCardModel } from '@renderer/tauri/store-api'
+import { Modal } from 'ant-design-vue'
 
 const storeSettings = useSettingsStore()
 const storeNoteCard = useNoteCardStore()
@@ -99,6 +106,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  notification: {
+    type: String as PropType<'none' | 'day' | 'once'>,
+    default: 'none',
+  },
+  timePicker: {
+    type: String,
+    default: '00:00',
+  },
 })
 
 const emit = defineEmits(['edit-note-card'])
@@ -112,6 +127,8 @@ const checkNoteCard = () => {
     title: props.title,
     content: props.content,
     isCheck: isCheck.value,
+    notification: props.notification,
+    timePicker: props.timePicker,
   }
   storeNoteCard.updateNoteCard(item)
 }
@@ -123,6 +140,8 @@ const unCheckNoteCard = () => {
     title: props.title,
     content: props.content,
     isCheck: isCheck.value,
+    notification: props.notification,
+    timePicker: props.timePicker,
   }
   storeNoteCard.updateNoteCard(item)
 }
@@ -133,12 +152,91 @@ const editNoteCard = () => {
     title: props.title,
     content: props.content,
     isCheck: props.isCheck,
+    notification: props.notification,
+    timePicker: props.timePicker,
   }
   emit('edit-note-card', item)
 }
 
 const deleteNoteCard = () => {
-  storeNoteCard.deleteNoteCard(props.id)
+  Modal.confirm({
+    icon: h(CloseCircleTwoTone, { twoToneColor: '#F56C6C' }),
+    content: `确认删除：「 ${[props.title]} 」?`,
+    okText: '删除',
+    okType: 'danger',
+    centered: true,
+    onOk() {
+      storeNoteCard.deleteNoteCard(props.id)
+    },
+    maskClosable: true,
+    cancelText: '取消',
+    onCancel() {
+      Modal.destroyAll()
+    },
+  })
+}
+
+const openDetail = () => {
+  const detailContainer = h(
+    'div',
+    {
+      style: {
+        width: '100%',
+        minWidth: '200px',
+        maxWidth: '600px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+    },
+    [
+      h(
+        'div',
+        {
+          style: {
+            fontSize: '17px',
+            fontWeight: '500',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+          },
+        },
+        `${props.title}`
+      ),
+      h(
+        'div',
+        {
+          class: 'custom-scroll-content',
+          style: {
+            width: '100%',
+            maxHeight: '400px',
+            overflowY: 'auto',
+            fontSize: '15px',
+            fontWeight: '400',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+          },
+        },
+        `${props.content}`
+      ),
+    ]
+  )
+
+  Modal.info({
+    width: 'auto',
+    icon: null,
+    bodyStyle: { padding: '16px' },
+    content: () => detailContainer,
+    okText: '确定',
+    okType: 'primary',
+    centered: true,
+    footer: null,
+    onOk() {
+      Modal.destroyAll()
+    },
+    maskClosable: true,
+  })
 }
 
 // 用于控制图标动画效果
@@ -166,6 +264,7 @@ watch(isCheck, (nv) => {
 
 .note-card-container {
   width: 240px;
+  height: auto;
 }
 
 .check-icon:hover :deep(svg) {

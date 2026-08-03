@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-// 使用 a-switch 的设置选项
 const props = defineProps({
   descriptions: {
     type: String,

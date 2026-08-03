@@ -50,6 +50,8 @@ export interface NoteCardModel {
   title: string
   content: string
   isCheck: boolean
+  notification: 'none' | 'once' | 'day'
+  timePicker: string
 }
 export const getNoteCardList = async () => {
   return (await storeNoteCards.get('list')) as unknown as NoteCardModel[]

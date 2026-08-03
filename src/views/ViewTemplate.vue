@@ -2,10 +2,10 @@
   <div class="view-container">
     <a-layout-header class="view-layout-header">
       <a-row style="width: 100%" justify="space-between" align="middle">
-        <a-col :span="2" style="text-align: center">
+        <a-col :span="2" style="text-align: left">
           <span class="view-layout-header-text">设置</span>
         </a-col>
-        <a-col :span="2" style="text-align: center">
+        <a-col :span="2" style="text-align: right">
           <!-- <a-button>按钮</a-button> -->
         </a-col>
       </a-row>

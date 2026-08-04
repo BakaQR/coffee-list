@@ -63,15 +63,26 @@ export const addNoteCard = async (item: NoteCardModel) => {
   const list = await getNoteCardList()
   list.push(item)
 }
+export const modifyNoteCard = async (item: NoteCardModel) => {
+  const list = await getNoteCardList()
+  const i = list.find((i) => i.id === item.id)
+  if (i) {
+    Object.assign(i, item)
+    setNoteCardList(list)
+  } else {
+    console.log('修改 note card 出错: ', item)
+  }
+}
 const initialNoteCardData = async () => {
   await storeSettings.set('id', 'note-card-list')
   // 默认便签数据
-  await storeNoteCards.set('list', [
-    {
-      id: nanoid(10),
-      title: '默认便签',
-      content: '便签下方是功能区按钮\n可以左键拖动便签调整位置',
-      isCheck: false,
-    },
-  ])
+  const defaultNoteCard: NoteCardModel = {
+    id: nanoid(10),
+    title: '默认便签',
+    content: '便签下方是功能区按钮\n可以左键拖动便签调整位置',
+    isCheck: false,
+    notification: 'none',
+    timePicker: '00:00',
+  }
+  await storeNoteCards.set('list', [defaultNoteCard])
 }

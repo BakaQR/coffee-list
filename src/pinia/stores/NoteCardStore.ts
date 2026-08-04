@@ -6,6 +6,7 @@ import {
   getNoteCardList,
   setNoteCardList,
 } from '@renderer/tauri/store-api'
+import emitter from '@renderer/utils/emitter'
 
 export const useNoteCardStore = defineStore('note-card-store', () => {
   const list = ref<NoteCardModel[]>([])
@@ -38,6 +39,8 @@ export const useNoteCardStore = defineStore('note-card-store', () => {
       console.log('更新 note card 出错: ', item)
     }
   }
+
+  emitter.on('notification-over', updateNoteCardList)
 
   return {
     list,

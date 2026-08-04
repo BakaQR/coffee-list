@@ -40,6 +40,8 @@
             :title="item.title"
             :content="item.content"
             :is-check="item.isCheck"
+            :notification="item.notification"
+            :time-picker="item.timePicker"
             @edit-note-card="handleEditNoteCard"
           />
         </VueDraggable>
@@ -96,7 +98,7 @@
                 label="选择时间"
               >
                 <a-time-picker
-                  v-model:value="formState.pickTime"
+                  v-model:value="formState.timePicker"
                   format="HH:mm"
                   value-format="HH:mm"
                   placeholder="选择时间"
@@ -122,6 +124,7 @@ import { NoteCardModel } from '@renderer/tauri/store-api'
 import { nanoid } from 'nanoid'
 import { Rule } from 'ant-design-vue/es/form'
 import dayjs from 'dayjs'
+import { registerNoteCardTimerTask } from '@renderer/utils/timer'
 
 const storeNoteCard = useNoteCardStore()
 const storeSettings = useSettingsStore()
@@ -154,21 +157,21 @@ const addNoteCard = () => {
   formState.content = ''
   formState.isCheck = false
   formState.notification = 'none'
-  formState.pickTime = dayjs().format('HH:mm')
+  formState.timePicker = dayjs().format('HH:mm')
   open.value = true
 }
 
 const handleOk = () => {
   formRef.value
     .validate()
-    .then(() => {
+    .then(async () => {
       const noteItem: NoteCardModel = {
         id: formState.id,
         title: formState.title,
         content: formState.content,
         isCheck: formState.isCheck,
         notification: formState.notification,
-        timePicker: formState.pickTime,
+        timePicker: formState.timePicker,
       }
       if (noteItem.timePicker === null) noteItem.timePicker = '00:00'
       if (isEdit.value) {
@@ -177,6 +180,8 @@ const handleOk = () => {
         noteItem.id = nanoid(10)
         storeNoteCard.addNoteCard(noteItem)
       }
+      await registerNoteCardTimerTask()
+      await storeNoteCard.updateNoteCardList()
       closeModal()
     })
     .catch((error: unknown) => {
@@ -197,7 +202,7 @@ const handleEditNoteCard = (item: NoteCardModel) => {
   formState.content = item.content
   formState.isCheck = item.isCheck
   formState.notification = item.notification
-  formState.pickTime = item.timePicker
+  formState.timePicker = item.timePicker
   open.value = true
 }
 
@@ -215,7 +220,7 @@ interface FormState {
   content: string
   isCheck: boolean
   notification: 'none' | 'once' | 'day'
-  pickTime: string
+  timePicker: string
 }
 
 const formState = reactive<FormState>({
@@ -224,7 +229,7 @@ const formState = reactive<FormState>({
   content: '',
   isCheck: false,
   notification: 'none',
-  pickTime: '00:00',
+  timePicker: '00:00',
 })
 
 const rules: Record<string, Rule[]> = {

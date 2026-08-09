@@ -33,6 +33,10 @@
             v-model:checked="switchMinimize"
             :descriptions="'最小化到系统托盘'"
           />
+          <SwitchOption
+            v-model:checked="switchAutoStart"
+            :descriptions="'开机自启动'"
+          />
           <ButtonOption
             :button-text="'发送通知'"
             :descriptions="'测试系统通知，如无显示，请检查「设置-系统-通知」是否允许程序发送通知'"
@@ -73,6 +77,13 @@ const switchMinimize = computed({
   get: () => storeSettings.options.minimize,
   set: async (v: boolean) => {
     await storeSettings.setSettingOptionsByKey('minimize', v)
+  },
+})
+
+const switchAutoStart = computed({
+  get: () => storeSettings.options.autoStart,
+  set: async (v: boolean) => {
+    await storeSettings.setSettingOptionsByKey('autoStart', v)
   },
 })
 

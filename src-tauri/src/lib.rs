@@ -1,4 +1,4 @@
-use tauri::{Manager};
+use tauri::Manager;
 
 mod tray;
 
@@ -42,10 +42,12 @@ fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_autostart::Builder::new().build())
         .plugin(tauri_plugin_single_instance::init(|_app, _args, _cwd| {
-            let _ = _app.get_webview_window("main")
-                       .expect("no main window")
-                       .set_focus();
+            let _ = _app
+                .get_webview_window("main")
+                .expect("no main window")
+                .set_focus();
         }))
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_window_state::Builder::new().build())

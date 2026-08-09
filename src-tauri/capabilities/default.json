@@ -19,6 +19,9 @@
     "core:window:allow-set-focus",
     "core:app:allow-default-window-icon",
     "core:window:allow-set-theme",
-    "notification:default"
+    "notification:default",
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled"
   ]
 }

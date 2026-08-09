@@ -1,6 +1,7 @@
 import { load } from '@tauri-apps/plugin-store'
 import { nanoid } from 'nanoid'
 import { updateTrayState } from './tray-manager'
+import { updateAutoStartState } from './autostart'
 
 // 设置
 const storeSettings = await load('settings.json')
@@ -22,6 +23,7 @@ export interface SettingOptionsModel {
   iconTooltip: boolean
   showTray: boolean
   minimize: boolean
+  autoStart: boolean
 }
 const SETTINGOPTIONS = 'setting-options'
 export const getSettingOptions = async () => {
@@ -34,12 +36,14 @@ export const setSettingOptions = async (option: SettingOptionsModel) => {
 // 用于执行数据更新后非渲染线程相关操作
 const setOver = () => {
   updateTrayState()
+  updateAutoStartState()
 }
 const initialSettingData = async () => {
   const init: SettingOptionsModel = {
     iconTooltip: true,
     showTray: true,
     minimize: false,
+    autoStart: false,
   }
   setSettingOptions(init)
 }

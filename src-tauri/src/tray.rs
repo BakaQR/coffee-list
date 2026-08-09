@@ -16,7 +16,7 @@ pub fn create_tray(app: &mut tauri::App) -> tauri::Result<()> {
         .show_menu_on_left_click(false)
         .on_menu_event(|app, event| match event.id.as_ref() {
             "show" => {
-                    if let Some(window) = app.get_webview_window("main") {
+                if let Some(window) = app.get_webview_window("main") {
                     let _ = window.unminimize();
                     let _ = window.show();
                     let _ = window.set_focus();
@@ -29,12 +29,15 @@ pub fn create_tray(app: &mut tauri::App) -> tauri::Result<()> {
         })
         .on_tray_icon_event(|tray, event| {
             match event {
-                TrayIconEvent::DoubleClick { button: MouseButton::Left, .. } => {
+                TrayIconEvent::DoubleClick {
+                    button: MouseButton::Left,
+                    ..
+                } => {
                     let app = tray.app_handle();
                     if let Some(window) = app.get_webview_window("main") {
-                        let _ = window.unminimize();  // 1. 解除最小化
-                        let _ = window.show();        // 2. 确保可见
-                        let _ = window.set_focus();   // 3. 置顶聚焦
+                        let _ = window.unminimize(); // 1. 解除最小化
+                        let _ = window.show(); // 2. 确保可见
+                        let _ = window.set_focus(); // 3. 置顶聚焦
                     }
                 }
                 _ => {}

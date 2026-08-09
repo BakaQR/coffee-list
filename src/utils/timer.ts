@@ -8,7 +8,7 @@ import {
 import dayjs from 'dayjs'
 import emitter from '@renderer/utils/emitter'
 
-const timerIdList: number[] = []
+const timerIdList: ReturnType<typeof setTimeout>[] = []
 
 // 判断当前时间是否已超过目标时间（今天）
 export const isTimePassedToday = (targetTime: string): boolean => {
@@ -19,7 +19,7 @@ export const isTimePassedToday = (targetTime: string): boolean => {
 
 // 添加定时任务
 export const addTimer = (callback: () => void, delay: number) => {
-  const id = setTimeout(callback, delay)
+  const id = setTimeout(callback, delay) as ReturnType<typeof setTimeout>
   timerIdList.push(id)
   return id
 }

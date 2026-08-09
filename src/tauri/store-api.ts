@@ -31,12 +31,12 @@ export const getSettingOptions = async () => {
 }
 export const setSettingOptions = async (option: SettingOptionsModel) => {
   await storeSettings.set(SETTINGOPTIONS, option)
-  setOver()
+  await setOver()
 }
 // 用于执行数据更新后非渲染线程相关操作
-const setOver = () => {
-  updateTrayState()
-  updateAutoStartState()
+const setOver = async () => {
+  await updateTrayState()
+  await updateAutoStartState()
 }
 const initialSettingData = async () => {
   const init: SettingOptionsModel = {

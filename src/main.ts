@@ -17,6 +17,10 @@ await initialStore()
 import { updateTrayState } from '@renderer/tauri/tray-manager'
 await updateTrayState()
 
+// 静默启动
+import { silentStart } from '@renderer/tauri/autostart'
+await silentStart()
+
 // 注册便签系统通知事件
 import { registerNoteCardTimerTask } from '@renderer/utils/timer'
 await registerNoteCardTimerTask()

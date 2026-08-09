@@ -42,7 +42,8 @@ fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_autostart::Builder::new().build())
+        .plugin(tauri_plugin_cli::init())
+        .plugin(tauri_plugin_autostart::Builder::new().args(["--autostart"]).build(),)
         .plugin(tauri_plugin_single_instance::init(|_app, _args, _cwd| {
             let _ = _app
                 .get_webview_window("main")

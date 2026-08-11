@@ -20,7 +20,10 @@
           <p>{{ props.title }}</p>
         </div>
       </template>
-      <div class="note-card-content font-text-normal">
+      <div
+        v-if="props.content !== ''"
+        class="note-card-content font-text-normal"
+      >
         <p>{{ props.content }}</p>
       </div>
       <template #actions>

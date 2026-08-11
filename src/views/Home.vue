@@ -242,7 +242,6 @@ const rules: Record<string, Rule[]> = {
   ],
   content: [
     {
-      required: true,
       message: '请输入便签内容',
       trigger: 'change',
     },

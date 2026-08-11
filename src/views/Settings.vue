@@ -31,11 +31,15 @@
           />
           <SwitchOption
             v-model:checked="switchMinimize"
-            :descriptions="'最小化到系统托盘'"
+            :descriptions="'关闭时最小化到系统托盘'"
           />
           <SwitchOption
             v-model:checked="switchAutoStart"
             :descriptions="'开机自启动'"
+          />
+          <SwitchOption
+            v-model:checked="switchNotificationSound"
+            :descriptions="'通知音效'"
           />
           <ButtonOption
             :button-text="'发送通知'"
@@ -84,6 +88,13 @@ const switchAutoStart = computed({
   get: () => storeSettings.options.autoStart,
   set: async (v: boolean) => {
     await storeSettings.setSettingOptionsByKey('autoStart', v)
+  },
+})
+
+const switchNotificationSound = computed({
+  get: () => storeSettings.options.notificationSound,
+  set: async (v: boolean) => {
+    await storeSettings.setSettingOptionsByKey('notificationSound', v)
   },
 })
 

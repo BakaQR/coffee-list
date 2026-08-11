@@ -14,6 +14,7 @@ export const useSettingsStore = defineStore('settings-store', () => {
     showTray: false,
     minimize: false,
     autoStart: false,
+    notificationSound: false,
   })
 
   // 从 store 中更新数据到 pinia

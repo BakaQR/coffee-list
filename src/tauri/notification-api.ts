@@ -3,6 +3,7 @@ import {
   requestPermission,
   sendNotification,
 } from '@tauri-apps/plugin-notification'
+import { getSettingOptions } from '@renderer/tauri/store-api'
 
 const checkPermission = async () => {
   if (!(await isPermissionGranted())) {
@@ -16,6 +17,11 @@ export const enqueueNotification = async (title: string, body: string) => {
     console.log('无通知权限')
     return false
   }
-  sendNotification({ title, body })
+  const options = await getSettingOptions()
+  if (!options) return
+
+  let sound = ''
+  if (options.notificationSound) sound = 'Default'
+  sendNotification({ title: title, body: body, sound: sound })
   return true
 }

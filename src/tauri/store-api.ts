@@ -24,6 +24,7 @@ export interface SettingOptionsModel {
   showTray: boolean
   minimize: boolean
   autoStart: boolean
+  notificationSound: boolean
 }
 const SETTINGOPTIONS = 'setting-options'
 export const getSettingOptions = async () => {
@@ -44,6 +45,7 @@ const initialSettingData = async () => {
     showTray: true,
     minimize: false,
     autoStart: false,
+    notificationSound: true,
   }
   setSettingOptions(init)
 }

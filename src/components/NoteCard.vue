@@ -88,6 +88,7 @@ import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import { NoteCardModel } from '@renderer/tauri/store-api'
 import { Modal } from 'ant-design-vue'
+import { registerNoteCardTimerTask } from '@renderer/utils/timer'
 
 const storeSettings = useSettingsStore()
 const storeNoteCard = useNoteCardStore()
@@ -168,8 +169,9 @@ const deleteNoteCard = () => {
     okText: '删除',
     okType: 'danger',
     centered: true,
-    onOk() {
+    async onOk() {
       storeNoteCard.deleteNoteCard(props.id)
+      await registerNoteCardTimerTask()
     },
     maskClosable: true,
     cancelText: '取消',

@@ -10,6 +10,9 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // ant-design-vue auto import
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
+// tailwindcss auto import
+import tailwindcss from '@tailwindcss/vite';
+
 // vue-devtools
 import VueDevtools from 'vite-plugin-vue-devtools'
 
@@ -19,6 +22,7 @@ const host = process.env.TAURI_DEV_HOST
 export default defineConfig(async () => ({
   plugins: [
     vue(),
+    tailwindcss(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),

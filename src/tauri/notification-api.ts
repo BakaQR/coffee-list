@@ -18,10 +18,9 @@ export const enqueueNotification = async (title: string, body: string) => {
     return false
   }
   const options = await getSettingOptions()
-  if (!options) return
 
   let sound = ''
-  if (options.notificationSound) sound = 'Default'
+  if (options?.notificationSound) sound = 'Default'
   sendNotification({ title: title, body: body, sound: sound })
   return true
 }

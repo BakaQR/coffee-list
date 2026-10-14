@@ -38,5 +38,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SwitchOption: typeof import('./src/components/settings/SwitchOption.vue')['default']
+    ViewTemplate: typeof import('./src/components/layout/ViewTemplate.vue')['default']
   }
 }

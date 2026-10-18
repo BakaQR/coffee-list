@@ -1,9 +1,10 @@
 import {
   isPermissionGranted,
   requestPermission,
-  sendNotification,
+  // sendNotification,
 } from '@tauri-apps/plugin-notification'
 import { getSettingOptions } from '@renderer/tauri/store-api'
+import { invoke } from '@tauri-apps/api/core'
 
 const checkPermission = async () => {
   if (!(await isPermissionGranted())) {
@@ -12,15 +13,26 @@ const checkPermission = async () => {
   return true
 }
 
-export const enqueueNotification = async (title: string, body: string) => {
+export const enqueuePersistedNotification = async (
+  title: string,
+  body: string
+) => {
   if (!(await checkPermission())) {
     console.log('无通知权限')
     return false
   }
   const options = await getSettingOptions()
 
-  let sound = ''
-  if (options?.notificationSound) sound = 'Default'
-  sendNotification({ title: title, body: body, sound: sound })
+  const sound = options?.notificationSound ? 'Default' : undefined
+
+  // 插件实现的通知无法持久化，很容易就漏了
+  // 现在改成使用 rust 中命令发起 scenario="reminder" 的 toast
+  // sendNotification({ title: title, body: body, sound: sound })
+  await invoke('notify_sticky', {
+    title: title,
+    body: body,
+    sound: sound,
+  })
+
   return true
 }

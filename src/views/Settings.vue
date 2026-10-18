@@ -59,7 +59,7 @@ import SwitchOption from '@renderer/components/settings/SwitchOption.vue'
 import ButtonOption from '@renderer/components/settings/ButtonOption.vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
-import { enqueueNotification } from '@renderer/tauri/notification-api'
+import { enqueuePersistedNotification } from '@renderer/tauri/notification-api'
 
 const storeSettings = useSettingsStore()
 
@@ -99,7 +99,7 @@ const switchNotificationSound = computed({
 })
 
 const testNotification = async () => {
-  await enqueueNotification('测试通知是否正常发送', '现已发送成功！')
+  await enqueuePersistedNotification('测试通知是否正常发送', '现已发送成功！')
 }
 </script>
 <style scoped lang="scss">

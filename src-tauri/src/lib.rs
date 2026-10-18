@@ -1,4 +1,5 @@
 use tauri::Manager;
+use notify_rust::{Notification as DesktopNotification, Urgency};
 
 mod tray;
 
@@ -6,6 +7,51 @@ mod tray;
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+// 持久化通知
+#[tauri::command]
+fn notify_sticky(
+    app: tauri::AppHandle,
+    title: String,
+    body: String,
+    sound: Option<String>,
+) -> Result<(), String> {
+    let mut notification = DesktopNotification::new();
+
+    notification
+        .summary(&title)
+        .body(&body)
+        // Windows 后端会把 Critical 映射成 toast 的 scenario="reminder"
+        .urgency(Urgency::Critical)
+        // reminder 必须至少有一个按钮，否则 Windows 当普通通知处理，几秒后收起
+        .action("dismiss", "关闭");
+
+    if let Some(sound) = sound.filter(|s| !s.is_empty()) {
+        notification.sound_name(&sound);
+    }
+
+    #[cfg(windows)]
+    {
+        use std::path::MAIN_SEPARATOR as SEP;
+
+        // 和官方插件保持一致：
+        // 只有安装后的 exe 才设置 AppUserModelID；
+        // 开发模式（target/debug、target/release）沿用 PowerShell 的 AUMID，
+        // 否则通知可能因为 AUMID 没注册而根本不显示。
+        let exe = tauri::utils::platform::current_exe().map_err(|e| e.to_string())?;
+        let exe_dir = exe.parent().ok_or_else(|| "无法获取 exe 目录".to_string())?;
+        let curr_dir = exe_dir.display().to_string();
+        let is_dev = curr_dir.ends_with(format!("{SEP}target{SEP}debug").as_str())
+            || curr_dir.ends_with(format!("{SEP}target{SEP}release").as_str());
+
+        if !is_dev {
+            notification.app_id(&app.config().identifier);
+        }
+    }
+
+    notification.show().map_err(|e| e.to_string())?;
+    Ok(())
 }
 
 // 开发环境不阻止大多数快捷键
@@ -59,7 +105,7 @@ pub fn run() {
             tray::create_tray(app)?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, notify_sticky])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

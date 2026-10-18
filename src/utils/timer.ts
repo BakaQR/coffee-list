@@ -1,4 +1,4 @@
-import { enqueueNotification } from '@renderer/tauri/notification-api'
+import { enqueuePersistedNotification } from '@renderer/tauri/notification-api'
 import {
   getNoteCardList,
   modifyNoteCard,
@@ -51,7 +51,7 @@ const startDailyLoop = async (item: NoteCardModel) => {
       const nextTarget = dayjs(item.timePicker, 'HH:mm')
         .add(1, 'day')
         .diff(dayjs())
-      await enqueueNotification(
+      await enqueuePersistedNotification(
         '便签定时通知',
         '便签：「' +
           item.title +
@@ -73,7 +73,7 @@ const startOnce = async (item: NoteCardModel) => {
     item.notification = 'none'
     item.timePicker = '00:00'
     await modifyNoteCard(item)
-    await enqueueNotification(
+    await enqueuePersistedNotification(
       '便签定时通知',
       '便签：「' + item.title + '」已到达设定时间'
     )

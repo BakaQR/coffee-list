@@ -4,6 +4,7 @@ import router from '@renderer/router'
 import { pinia, initializeStore } from '@renderer/pinia'
 
 // 全局样式
+import '@renderer/assets/style/tailwind.css'
 import '@renderer/assets/style/root.scss'
 
 // 标题栏按钮

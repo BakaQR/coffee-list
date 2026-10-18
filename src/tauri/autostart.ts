@@ -5,7 +5,7 @@ import { getMatches } from '@tauri-apps/plugin-cli'
 
 export const updateAutoStartState = async () => {
   const options = await getSettingOptions()
-  
+
   if (options?.autoStart) {
     await enable()
   } else {

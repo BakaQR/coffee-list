@@ -34,6 +34,7 @@ declare module 'vue' {
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ButtonOption: typeof import('./src/components/settings/ButtonOption.vue')['default']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+    LayoutTemplate: typeof import('./src/components/layout/LayoutTemplate.vue')['default']
     NoteCard: typeof import('./src/components/NoteCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

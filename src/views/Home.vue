@@ -1,28 +1,21 @@
 <template>
-  <div class="view-container">
-    <a-layout-header class="view-layout-header">
-      <a-row style="width: 100%" justify="space-between" align="middle">
-        <a-col :span="2" style="text-align: left">
-          <span class="font-text-title"> 便签 </span>
-        </a-col>
-        <a-col :span="2" style="text-align: right">
-          <a-tooltip
-            :color="`blue`"
-            :open="storeSettings.options.iconTooltip ? undefined : false"
-          >
-            <template #title>添加便签</template>
-            <a-button
-              type="text"
-              size="large"
-              :icon="h(FileAddOutlined)"
-              @click="addNoteCard"
-            />
-          </a-tooltip>
-        </a-col>
-      </a-row>
-    </a-layout-header>
-
-    <a-layout-content class="view-layout-content">
+  <LayoutTemplate title="便签">
+    <template #headerAction>
+      <a-tooltip
+        :color="`blue`"
+        :open="storeSettings.options.iconTooltip ? undefined : false"
+      >
+        <template #title>添加便签</template>
+        <a-button
+          type="text"
+          size="large"
+          :icon="h(FileAddOutlined)"
+          class="flex! justify-center! items-center!"
+          @click="addNoteCard"
+        />
+      </a-tooltip>
+    </template>
+    <template #bodyContent>
       <el-scrollbar class="note-card-scrollbar">
         <VueDraggable
           v-model="list"
@@ -46,70 +39,72 @@
           />
         </VueDraggable>
       </el-scrollbar>
-    </a-layout-content>
+    </template>
 
-    <a-modal
-      :open="open"
-      centered
-      cancel-text="取消"
-      ok-text="确定"
-      style="width: 60%"
-      destroy-on-close
-      :closable="false"
-      @ok="handleOk"
-      @cancel="handleCancel"
-    >
-      <div class="modal-container">
-        <div class="modal-header">
-          <p v-if="!isEdit" class="font-text-title">添加便签</p>
-          <p v-else class="font-text-title">修改便签</p>
-        </div>
-        <div class="modal-body">
-          <el-scrollbar max-height="400px" class="modal-body-scrollbar">
-            <a-form
-              ref="formRef"
-              :model="formState"
-              :rules="rules"
-              autocomplete="off"
-              layout="vertical"
-            >
-              <a-form-item label="标题" name="title">
-                <a-input
-                  v-model:value="formState.title"
-                  placeholder="请输入便签标题"
-                />
-              </a-form-item>
-              <a-form-item label="内容" name="content">
-                <a-textarea
-                  v-model:value="formState.content"
-                  placeholder="请输入便签内容"
-                  :auto-size="{ minRows: 3, maxRows: 8 }"
-                />
-              </a-form-item>
-              <a-form-item label="通知类型">
-                <a-select v-model:value="formState.notification">
-                  <a-select-option value="none">不发送</a-select-option>
-                  <a-select-option value="once">只发送一次</a-select-option>
-                  <a-select-option value="day">每日</a-select-option>
-                </a-select>
-              </a-form-item>
-              <a-form-item
-                v-if="formState.notification !== 'none'"
-                label="选择时间"
+    <template #outsideAction>
+      <a-modal
+        :open="open"
+        centered
+        cancel-text="取消"
+        ok-text="确定"
+        style="width: 60%"
+        destroy-on-close
+        :closable="false"
+        @ok="handleOk"
+        @cancel="handleCancel"
+      >
+        <div class="modal-container">
+          <div class="modal-header">
+            <p v-if="!isEdit" class="font-text-title">添加便签</p>
+            <p v-else class="font-text-title">修改便签</p>
+          </div>
+          <div class="modal-body">
+            <el-scrollbar max-height="400px" class="modal-body-scrollbar">
+              <a-form
+                ref="formRef"
+                :model="formState"
+                :rules="rules"
+                autocomplete="off"
+                layout="vertical"
               >
-                <a-time-picker
-                  v-model:value="formState.timePicker"
-                  format="HH:mm"
-                  value-format="HH:mm"
-                  placeholder="选择时间"
-                />
-              </a-form-item>
-            </a-form>
-          </el-scrollbar>
+                <a-form-item label="标题" name="title">
+                  <a-input
+                    v-model:value="formState.title"
+                    placeholder="请输入便签标题"
+                  />
+                </a-form-item>
+                <a-form-item label="内容" name="content">
+                  <a-textarea
+                    v-model:value="formState.content"
+                    placeholder="请输入便签内容"
+                    :auto-size="{ minRows: 3, maxRows: 8 }"
+                  />
+                </a-form-item>
+                <a-form-item label="通知类型">
+                  <a-select v-model:value="formState.notification">
+                    <a-select-option value="none">不发送</a-select-option>
+                    <a-select-option value="once">只发送一次</a-select-option>
+                    <a-select-option value="day">每日</a-select-option>
+                  </a-select>
+                </a-form-item>
+                <a-form-item
+                  v-if="formState.notification !== 'none'"
+                  label="选择时间"
+                >
+                  <a-time-picker
+                    v-model:value="formState.timePicker"
+                    format="HH:mm"
+                    value-format="HH:mm"
+                    placeholder="选择时间"
+                  />
+                </a-form-item>
+              </a-form>
+            </el-scrollbar>
+          </div>
         </div>
-      </div>
-    </a-modal>
-  </div>
+      </a-modal>
+    </template>
+  </LayoutTemplate>
 </template>
 
 <script setup lang="ts">
@@ -123,8 +118,9 @@ import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { NoteCardModel } from '@renderer/tauri/store-api'
 import { nanoid } from 'nanoid'
 import { Rule } from 'ant-design-vue/es/form'
-import dayjs from 'dayjs'
 import { registerNoteCardTimerTask } from '@renderer/utils/timer'
+import LayoutTemplate from '@renderer/components/layout/LayoutTemplate.vue'
+import dayjs from 'dayjs'
 
 const storeNoteCard = useNoteCardStore()
 const storeSettings = useSettingsStore()

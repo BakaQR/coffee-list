@@ -1,55 +1,57 @@
 <template>
-  <div class="view-container">
-    <a-layout-header class="view-layout-header">
-      <a-row style="width: 100%" justify="space-between" align="middle">
-        <a-col :span="2" style="text-align: left">
-          <span class="font-text-title">设置</span>
-        </a-col>
-        <a-col :span="2" style="text-align: right">
-          <!-- <a-button>按钮</a-button> -->
-        </a-col>
-      </a-row>
-    </a-layout-header>
-    <a-layout-content class="view-layout-content">
-      <a-card style="margin-bottom: 16px" :bordered="false">
-        <template #title>
-          <p class="font-text-label">系统设置</p>
-        </template>
-        <div class="setting-container">
-          <SwitchOption v-model:checked="switchIconTooltip">
-            <template #description>
-              <span>图标文字提示，鼠标悬停在右边图标查看效果。</span>
-              <a-tooltip :color="`blue`">
-                <template v-if="switchIconTooltip" #title>添加便签</template>
-                <a-button type="text" size="large" :icon="h(FileAddOutlined)" />
-              </a-tooltip>
-            </template>
-          </SwitchOption>
-          <SwitchOption
-            v-model:checked="switchShowTray"
-            :descriptions="'显示系统托盘'"
-          />
-          <SwitchOption
-            v-model:checked="switchMinimize"
-            :descriptions="'关闭时最小化到系统托盘'"
-          />
-          <SwitchOption
-            v-model:checked="switchAutoStart"
-            :descriptions="'开机自启动'"
-          />
-          <SwitchOption
-            v-model:checked="switchNotificationSound"
-            :descriptions="'通知音效'"
-          />
-          <ButtonOption
-            :button-text="'发送通知'"
-            :descriptions="'测试系统通知，如无显示，请检查「设置-系统-通知」是否允许程序发送通知'"
-            @button:click="testNotification"
-          />
-        </div>
-      </a-card>
-    </a-layout-content>
-  </div>
+  <LayoutTemplate title="设置">
+    <template #bodyContent>
+      <div class="p-4">
+        <a-card :bordered="false">
+          <template #title>
+            <p class="font-text-label">系统设置</p>
+          </template>
+
+          <div class="flex flex-col gap-4">
+            <SwitchOption v-model:checked="switchIconTooltip">
+              <template #description>
+                <div class="flex justify-start items-center">
+                  <span>图标文字提示，鼠标悬停在右边图标查看效果。</span>
+                  <a-tooltip :color="`blue`">
+                    <template v-if="switchIconTooltip" #title
+                      >添加便签</template
+                    >
+                    <a-button
+                      type="text"
+                      size="large"
+                      :icon="h(FileAddOutlined)"
+                      class="flex! justify-center! items-center!"
+                    />
+                  </a-tooltip>
+                </div>
+              </template>
+            </SwitchOption>
+            <SwitchOption
+              v-model:checked="switchShowTray"
+              :descriptions="'显示系统托盘'"
+            />
+            <SwitchOption
+              v-model:checked="switchMinimize"
+              :descriptions="'关闭时最小化到系统托盘'"
+            />
+            <SwitchOption
+              v-model:checked="switchAutoStart"
+              :descriptions="'开机自启动'"
+            />
+            <SwitchOption
+              v-model:checked="switchNotificationSound"
+              :descriptions="'通知音效'"
+            />
+            <ButtonOption
+              :button-text="'发送通知'"
+              :descriptions="'测试系统通知，如无显示，请检查「设置-系统-通知」是否允许程序发送通知'"
+              @button:click="testNotification"
+            />
+          </div>
+        </a-card>
+      </div>
+    </template>
+  </LayoutTemplate>
 </template>
 
 <script setup lang="ts">
@@ -60,6 +62,7 @@ import ButtonOption from '@renderer/components/settings/ButtonOption.vue'
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { enqueuePersistedNotification } from '@renderer/tauri/notification-api'
+import LayoutTemplate from '@renderer/components/layout/LayoutTemplate.vue'
 
 const storeSettings = useSettingsStore()
 
@@ -105,10 +108,4 @@ const testNotification = async () => {
 <style scoped lang="scss">
 @use 'layout';
 @use 'font' as font;
-
-.setting-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
 </style>

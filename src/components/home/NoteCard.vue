@@ -1,10 +1,11 @@
 <template>
   <div class="note-card-container">
     <a-card
-      class="note-card"
       :bordered="false"
       :hoverable="true"
       @click="openDetail"
+      @mouseenter="showActions = true"
+      @mouseleave="showActions = false"
     >
       <template #title>
         <div class="note-card-title font-text-label">
@@ -26,7 +27,7 @@
       >
         <p>{{ props.content }}</p>
       </div>
-      <template #actions>
+      <template #actions v-if="showActions">
         <a-tooltip
           v-if="!isCheck"
           :color="`#00b96b`"
@@ -92,6 +93,8 @@ import { registerNoteCardTimerTask } from '@renderer/utils/timer'
 
 const storeSettings = useSettingsStore()
 const storeNoteCard = useNoteCardStore()
+
+const showActions = ref(false)
 
 const props = defineProps({
   id: {

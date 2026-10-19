@@ -3,22 +3,24 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import Components from 'unplugin-vue-components/vite'
 
-// element-plus auto import
+// element-plus
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-// ant-design-vue auto import
+// ant-design-vue
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
-// tailwindcss auto import
+// tailwindcss
 import tailwindcss from '@tailwindcss/vite';
 
 // vue-devtools
 import VueDevtools from 'vite-plugin-vue-devtools'
 
+// https://icon-sets.iconify.design/
+import iconifyOffline from 'vite-plugin-iconify-offline';
+
 const host = process.env.TAURI_DEV_HOST
 
-// https://vite.dev/config/
 export default defineConfig(async () => ({
   plugins: [
     vue(),
@@ -37,6 +39,11 @@ export default defineConfig(async () => ({
         }),
         ElementPlusResolver(),
       ],
+    }),
+    iconifyOffline({
+      // 显式指定使用官方离线入口，确保产物中不含联网代码
+      package: '@iconify/vue/offline',
+      exclude: ['00', 'button'],
     }),
   ],
 

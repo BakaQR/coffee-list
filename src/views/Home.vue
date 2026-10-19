@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import NoteCard from '@renderer/components/NoteCard.vue'
+import NoteCard from '@renderer/components/home/NoteCard.vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 
 import { h, onMounted, reactive, ref, watch } from 'vue'

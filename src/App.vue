@@ -3,9 +3,8 @@
     :locale="locale"
     :theme="{
       token: {
-        borderRadius: themeState.borderRadius,
-        colorPrimary: themeState.colorPrimary,
-        fontSize: themeState.fontSize,
+        colorPrimary: '#2592ff',
+        fontSize: 14,
       },
     }"
   >
@@ -14,7 +13,7 @@
         <a-layout-sider
           v-model:collapsed="collapsed"
           theme="light"
-          collapsed-width="60"
+          :collapsed-width="64"
           :trigger="null"
           collapsible
           class="app-layout-sider"
@@ -23,16 +22,9 @@
           <a-menu
             v-model:selected-keys="selectedKeys"
             mode="inline"
+            :items="items"
             @click="handleMenuRouterTo"
           >
-            <a-menu-item key="/" :title="pageNoteCardTitle">
-              <BookOutlined />
-              <span>便签</span>
-            </a-menu-item>
-            <a-menu-item key="/settings" :title="pageSettingsTitle">
-              <SettingOutlined />
-              <span>设置</span>
-            </a-menu-item>
           </a-menu>
         </a-layout-sider>
         <a-layout>
@@ -47,27 +39,43 @@
 
 <script setup lang="ts">
 import router from './router'
-import { computed, onMounted, ref } from 'vue'
-import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue'
-
-const themeState = ref({
-  colorPrimary: '#2592ff',
-  fontSize: 15,
-  borderRadius: 6,
-})
-
+import { computed, h, onMounted, reactive, ref } from 'vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-const locale = zhCN
 
+const locale = zhCN
 const collapsed = ref<boolean>(true)
 const selectedKeys = ref<string[]>(['/'])
 
+
+const pageNoteCardTitle = computed(() =>
+  storeSettings.options.iconTooltip ? '便签' : ''
+)
+const pageSettingsTitle = computed(() =>
+  storeSettings.options.iconTooltip ? '设置' : ''
+)
+
+const items = reactive([
+  {
+    key: '/',
+    icon: () => h(BookOutlined, { class: 'text-4xl' }),
+    label: '便签',
+    title: pageNoteCardTitle,
+  },
+  {
+    key: '/settings',
+    icon: () => h(SettingOutlined),
+    label: '设置',
+    title: pageSettingsTitle,
+  },
+])
+
 // 路由跳转
-const handleMenuRouterTo = (e: { key: string }) => {
-  router.push(e.key)
+const handleMenuRouterTo = ({ key }: { key: string }) => {
+  router.push({ path: key })
 }
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
+import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue';
 const storeSettings = useSettingsStore()
 
 onMounted(async () => {
@@ -76,12 +84,6 @@ onMounted(async () => {
   })
 })
 
-const pageNoteCardTitle = computed(() =>
-  storeSettings.options.iconTooltip ? '便签' : ''
-)
-const pageSettingsTitle = computed(() =>
-  storeSettings.options.iconTooltip ? '设置' : ''
-)
 </script>
 
 <style scoped>

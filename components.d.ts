@@ -35,10 +35,9 @@ declare module 'vue' {
     ButtonOption: typeof import('./src/components/settings/ButtonOption.vue')['default']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     LayoutTemplate: typeof import('./src/components/layout/LayoutTemplate.vue')['default']
-    NoteCard: typeof import('./src/components/NoteCard.vue')['default']
+    NoteCard: typeof import('./src/components/home/NoteCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SwitchOption: typeof import('./src/components/settings/SwitchOption.vue')['default']
-    ViewTemplate: typeof import('./src/components/layout/ViewTemplate.vue')['default']
   }
 }

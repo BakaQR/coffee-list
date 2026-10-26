@@ -57,7 +57,10 @@ export interface NoteCardModel {
   content: string
   isCheck: boolean
   notification: 'none' | 'once' | 'day'
-  timePicker: string
+  // 只通知一次 要选到具体的日期和时间
+  timePickerOnce?: string
+  // 每天都通知 只需要选时间 不需要选日期
+  timePickerDay?: string
 }
 export const getNoteCardList = async () => {
   return (await storeNoteCards.get('list')) as unknown as NoteCardModel[]
@@ -88,7 +91,8 @@ const initialNoteCardData = async () => {
     content: '便签下方是功能区按钮\n可以左键拖动便签调整位置',
     isCheck: false,
     notification: 'none',
-    timePicker: '00:00',
+    timePickerOnce: '00:00',
+    timePickerDay: '00:00'
   }
   await storeNoteCards.set('list', [defaultNoteCard])
 }

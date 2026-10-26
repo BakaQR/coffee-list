@@ -81,6 +81,7 @@ const startOnce = async (item: NoteCardModel) => {
   }, delay)
 }
 
+// 注册通知事件 目前是直接查询整个便签列表进行注册
 export const registerNoteCardTimerTask = async () => {
   clearTimer()
   const list: NoteCardModel[] = await getNoteCardList()

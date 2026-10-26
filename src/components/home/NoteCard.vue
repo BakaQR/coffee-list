@@ -117,7 +117,11 @@ const props = defineProps({
     type: String as PropType<'none' | 'day' | 'once'>,
     default: 'none',
   },
-  timePicker: {
+  timePickerOnce: {
+    type: String,
+    default: '00:00',
+  },
+  timePickerDay: {
     type: String,
     default: '00:00',
   },
@@ -135,7 +139,8 @@ const checkNoteCard = () => {
     content: props.content,
     isCheck: isCheck.value,
     notification: props.notification,
-    timePicker: props.timePicker,
+    timePickerOnce: props.timePickerOnce,
+    timePickerDay: props.timePickerDay
   }
   storeNoteCard.updateNoteCard(item)
 }
@@ -148,25 +153,19 @@ const unCheckNoteCard = () => {
     content: props.content,
     isCheck: isCheck.value,
     notification: props.notification,
-    timePicker: props.timePicker,
+    timePickerOnce: props.timePickerOnce,
+    timePickerDay: props.timePickerDay
   }
   storeNoteCard.updateNoteCard(item)
 }
 
 const editNoteCard = () => {
-  const item: NoteCardModel = {
-    id: props.id,
-    title: props.title,
-    content: props.content,
-    isCheck: props.isCheck,
-    notification: props.notification,
-    timePicker: props.timePicker,
-  }
+  const item: NoteCardModel = { ...props }
   emit('edit-note-card', item)
 }
 
 const deleteNoteCard = () => {
-  Modal.confirm({
+  const modal = Modal.confirm({
     icon: h(CloseCircleTwoTone, { twoToneColor: '#F56C6C' }),
     content: `确认删除：「 ${[props.title]} 」?`,
     okText: '删除',

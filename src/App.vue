@@ -1,6 +1,6 @@
 <template>
   <a-config-provider
-    :locale="locale"
+    :locale="localeAntDesignVue"
     :theme="{
       token: {
         colorPrimary: '#2592ff',
@@ -8,41 +8,46 @@
       },
     }"
   >
-    <div class="app-container">
-      <a-layout class="app-layout">
-        <a-layout-sider
-          v-model:collapsed="collapsed"
-          theme="light"
-          :collapsed-width="64"
-          :trigger="null"
-          collapsible
-          class="app-layout-sider"
-        >
-          <div class="app-logo" />
-          <a-menu
-            v-model:selected-keys="selectedKeys"
-            mode="inline"
-            :items="items"
-            @click="handleMenuRouterTo"
+    <el-config-provider :locale="localeElementPlus">
+      <div class="app-container">
+        <a-layout class="app-layout">
+          <a-layout-sider
+            v-model:collapsed="collapsed"
+            theme="light"
+            :collapsed-width="64"
+            :trigger="null"
+            collapsible
+            class="app-layout-sider"
           >
-          </a-menu>
-        </a-layout-sider>
-        <a-layout>
-          <!-- router view -->
-          <router-view />
-          <!-- router view -->
+            <div class="app-logo" />
+            <a-menu
+              v-model:selected-keys="selectedKeys"
+              mode="inline"
+              :items="items"
+              @click="handleMenuRouterTo"
+            >
+            </a-menu>
+          </a-layout-sider>
+          <a-layout>
+            <!-- router view -->
+            <router-view />
+            <!-- router view -->
+          </a-layout>
         </a-layout>
-      </a-layout>
-    </div>
+      </div>
+    </el-config-provider>
   </a-config-provider>
 </template>
 
 <script setup lang="ts">
 import router from './router'
 import { computed, h, onMounted, reactive, ref } from 'vue'
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import zhCN_AntDesignVue from 'ant-design-vue/es/locale/zh_CN'
+import zhCN_ElementPlus from 'element-plus/es/locale/lang/zh-cn'
 
-const locale = zhCN
+const localeAntDesignVue = zhCN_AntDesignVue
+const localeElementPlus = zhCN_ElementPlus
+
 const collapsed = ref<boolean>(true)
 const selectedKeys = ref<string[]>(['/'])
 

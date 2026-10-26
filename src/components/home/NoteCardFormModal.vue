@@ -48,10 +48,20 @@
               label="选择时间"
             >
               <a-time-picker
-                v-model:value="formState.timePicker"
+                v-if="formState.notification === 'day'"
+                v-model:value="formState.timePickerOnce"
                 format="HH:mm"
                 value-format="HH:mm"
                 placeholder="选择时间"
+              />
+              <el-date-picker
+                v-if="formState.notification === 'once'"
+                v-model="formState.timePickerDay"
+                type="datetime"
+                placeholder="选择日期与时间"
+                format="YYYY-MM-DD HH:mm"
+                date-format="MMM DD, YYYY"
+                time-format="HH:mm"
               />
             </a-form-item>
           </a-form>
@@ -81,28 +91,17 @@ const formRef = ref()
 const open = ref(false)
 const isEdit = ref(false)
 
-interface FormState {
-  // id 只在编辑模式下使用 添加模式下直接使用 nanoid
-  // isCheck 只作为传递使用 具体在 NoteCard.vue 组件内部修改该值
-  id: string
-  title: string
-  content: string
-  isCheck: boolean
-  notification: 'none' | 'once' | 'day'
-  timePicker: string
-}
-
 // 表单初始值：新增与编辑都以此为基准，避免残留上一次的数据
-const createDefaultForm = (): FormState => ({
+const createDefaultForm = (): NoteCardModel => ({
   id: '',
   title: '',
   content: '',
   isCheck: false,
   notification: 'none',
-  timePicker: '00:00',
+  timePickerOnce: '00:00',
 })
 
-const formState = reactive<FormState>(createDefaultForm())
+const formState = reactive<NoteCardModel>(createDefaultForm())
 
 const rules: Record<string, Rule[]> = {
   title: [
@@ -120,9 +119,10 @@ const rules: Record<string, Rule[]> = {
   ],
 }
 
-// 新增：清空表单，时间默认取当前时刻
+// 新增模式 清空表单 时间默认取当前时刻
 const openCreate = async () => {
   isEdit.value = false
+  // 使用表单默认值 覆盖当前 formState 获取当前时间覆盖 timePicker
   Object.assign(formState, createDefaultForm(), {
     timePicker: dayjs().format('HH:mm'),
   })
@@ -149,14 +149,14 @@ const handleOk = async () => {
   }
 
   const noteItem: NoteCardModel = {
-    id: formState.id,
-    title: formState.title,
-    content: formState.content,
-    isCheck: formState.isCheck,
-    notification: formState.notification,
-    timePicker: formState.timePicker || '00:00',
+    ...formState,
+    timePickerOnce: formState.timePickerOnce ?? '00:00',
+    timePickerDay: formState.timePickerDay ?? '00:00',
   }
 
+  console.log(noteItem.timePickerDay)
+
+  // 编辑模式下直接传递原有的id 新建模式下直接使用新的随机id
   if (isEdit.value) {
     await storeNoteCard.updateNoteCard(noteItem)
   } else {
@@ -164,7 +164,9 @@ const handleOk = async () => {
     await storeNoteCard.addNoteCard(noteItem)
   }
 
+  // 注册通知事件
   await registerNoteCardTimerTask()
+
   await storeNoteCard.updateNoteCardList()
   emit('saved', noteItem)
   closeModal()

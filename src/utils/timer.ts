@@ -3,11 +3,11 @@ import {
   getNoteCardList,
   modifyNoteCard,
   NoteCardModel,
-  setNoteCardList,
 } from '@renderer/tauri/store-api'
 import dayjs from 'dayjs'
 import emitter from '@renderer/utils/emitter'
 
+// 定时器列表
 const timerIdList: ReturnType<typeof setTimeout>[] = []
 
 // 判断当前时间是否已超过目标时间（今天）
@@ -44,19 +44,15 @@ export const formatDelay = (ms: number) => {
 
 const startDailyLoop = async (item: NoteCardModel) => {
   const scheduleNext = () => {
-    let target = dayjs(item.timePicker, 'HH:mm')
+    let target = dayjs(item.timePickerDay, 'HH:mm')
     if (target.isBefore(dayjs())) target = target.add(1, 'day')
     const delay = target.diff(dayjs())
     addTimer(async () => {
-      const nextTarget = dayjs(item.timePicker, 'HH:mm')
-        .add(1, 'day')
-        .diff(dayjs())
       await enqueuePersistedNotification(
         '便签定时通知',
         '便签：「' +
           item.title +
-          '」已到达设定时间\n下次通知时间：' +
-          formatDelay(nextTarget)
+          '」已到达设定时间'
       )
       emitter.emit('notification-over')
       scheduleNext()
@@ -66,12 +62,12 @@ const startDailyLoop = async (item: NoteCardModel) => {
 }
 
 const startOnce = async (item: NoteCardModel) => {
-  let target = dayjs(item.timePicker, 'HH:mm')
+  let target = dayjs(item.timePickerOnce, 'YYYY-MM-DD HH:mm')
   if (target.isBefore(dayjs())) target = target.add(1, 'day')
   const delay = target.diff(dayjs())
   addTimer(async () => {
     item.notification = 'none'
-    item.timePicker = '00:00'
+    item.timePickerOnce = ''
     await modifyNoteCard(item)
     await enqueuePersistedNotification(
       '便签定时通知',
@@ -81,18 +77,16 @@ const startOnce = async (item: NoteCardModel) => {
   }, delay)
 }
 
-// 注册通知事件 目前是直接查询整个便签列表进行注册
+// 注册通知事件 目前是直接查询整个便签列表覆盖注册
 export const registerNoteCardTimerTask = async () => {
   clearTimer()
   const list: NoteCardModel[] = await getNoteCardList()
-  list.forEach(async (item) => {
-    if (item.notification === 'none') return
-    // 过期暂时未进行处理
-    if (item.notification === 'once') {
-      await startOnce(item)
-    } else {
-      await startDailyLoop(item)
-    }
-  })
-  await setNoteCardList(list)
+
+  for (const item of list) {
+    if (item.notification === 'none') continue
+    if (item.notification === 'once') await startOnce(item)
+    if (item.notification === 'day') await startDailyLoop(item);
+  }
+
+  // await setNoteCardList(list)
 }

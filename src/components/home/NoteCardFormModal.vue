@@ -49,19 +49,24 @@
             >
               <a-time-picker
                 v-if="formState.notification === 'day'"
-                v-model:value="formState.timePickerOnce"
+                v-model:value="formState.timePickerDay"
                 format="HH:mm"
                 value-format="HH:mm"
                 placeholder="选择时间"
+                style="width: 100%"
+                class="time-picker-with-left-icon"
               />
               <el-date-picker
                 v-if="formState.notification === 'once'"
-                v-model="formState.timePickerDay"
+                v-model="formState.timePickerOnce"
                 type="datetime"
                 placeholder="选择日期与时间"
                 format="YYYY-MM-DD HH:mm"
-                date-format="MMM DD, YYYY"
+                date-format="YYYY-MM-DD"
                 time-format="HH:mm"
+                value-format="YYYY-MM-DD HH:mm"
+                placement="top"
+                style="width: 100%"
               />
             </a-form-item>
           </a-form>
@@ -72,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, reactive, ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
@@ -98,10 +103,15 @@ const createDefaultForm = (): NoteCardModel => ({
   content: '',
   isCheck: false,
   notification: 'none',
-  timePickerOnce: '00:00',
+  timePickerOnce: '',       // YYYY-MM-DD HH:mm   2077-07-07 00:00
+  timePickerDay: '',        // HH:mm              00:00
 })
 
-const formState = reactive<NoteCardModel>(createDefaultForm())
+const resetForm = () => {
+  formState.value = createDefaultForm()
+}
+
+const formState = ref<NoteCardModel>(createDefaultForm())
 
 const rules: Record<string, Rule[]> = {
   title: [
@@ -122,10 +132,15 @@ const rules: Record<string, Rule[]> = {
 // 新增模式 清空表单 时间默认取当前时刻
 const openCreate = async () => {
   isEdit.value = false
+  resetForm()
+
   // 使用表单默认值 覆盖当前 formState 获取当前时间覆盖 timePicker
-  Object.assign(formState, createDefaultForm(), {
-    timePicker: dayjs().format('HH:mm'),
-  })
+  formState.value = {
+    ...createDefaultForm(),
+    timePickerOnce: dayjs().format('YYYY-MM-DD HH:mm'),
+    timePickerDay: dayjs().format('HH:mm'),
+  }
+
   open.value = true
   await nextTick()
   formRef.value?.clearValidate()
@@ -134,7 +149,16 @@ const openCreate = async () => {
 // 编辑：回填传入的便签数据
 const openEdit = async (item: NoteCardModel) => {
   isEdit.value = true
-  Object.assign(formState, createDefaultForm(), item)
+  resetForm()
+
+  formState.value = { ...item }
+
+  // 不发送通知时 对齐新增模式 时间默认取当前时刻
+  if(formState.value.notification === 'none'){
+    formState.value.timePickerOnce = dayjs().format('YYYY-MM-DD HH:mm')
+    formState.value.timePickerDay = dayjs().format('HH:mm')
+  }
+
   open.value = true
   await nextTick()
   formRef.value?.clearValidate()
@@ -144,17 +168,17 @@ const handleOk = async () => {
   try {
     await formRef.value?.validate()
   } catch (error) {
-    console.log('校验失败: ', error)
+    console.warn('校验失败: ', error)
     return
   }
 
-  const noteItem: NoteCardModel = {
-    ...formState,
-    timePickerOnce: formState.timePickerOnce ?? '00:00',
-    timePickerDay: formState.timePickerDay ?? '00:00',
+  // 不发送通知时重置两个日期的值
+  if(formState.value.notification === 'none') {
+    formState.value.timePickerOnce = ''
+    formState.value.timePickerDay = ''
   }
 
-  console.log(noteItem.timePickerDay)
+  const noteItem: NoteCardModel = { ...formState.value }
 
   // 编辑模式下直接传递原有的id 新建模式下直接使用新的随机id
   if (isEdit.value) {
@@ -163,6 +187,8 @@ const handleOk = async () => {
     noteItem.id = nanoid(10)
     await storeNoteCard.addNoteCard(noteItem)
   }
+
+  console.log(noteItem)
 
   // 注册通知事件
   await registerNoteCardTimerTask()
@@ -211,5 +237,18 @@ defineExpose({
 
 .modal-body-scrollbar {
   padding-right: 24px;
+}
+
+:deep(.time-picker-with-left-icon) {
+  padding-left: 0px;
+}
+
+:deep(.time-picker-with-left-icon .ant-picker-suffix) {
+  position: absolute;
+  left: 8px;
+}
+
+:deep(.time-picker-with-left-icon .ant-picker-input) {
+  padding-left: 32px;
 }
 </style>

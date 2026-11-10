@@ -119,11 +119,11 @@ const props = defineProps({
   },
   timePickerOnce: {
     type: String,
-    default: '00:00',
+    default: '',
   },
   timePickerDay: {
     type: String,
-    default: '00:00',
+    default: '',
   },
 })
 
@@ -134,13 +134,8 @@ const isCheck = ref(props.isCheck)
 const checkNoteCard = () => {
   isCheck.value = true
   const item: NoteCardModel = {
-    id: props.id,
-    title: props.title,
-    content: props.content,
+    ...props,
     isCheck: isCheck.value,
-    notification: props.notification,
-    timePickerOnce: props.timePickerOnce,
-    timePickerDay: props.timePickerDay
   }
   storeNoteCard.updateNoteCard(item)
 }
@@ -148,13 +143,8 @@ const checkNoteCard = () => {
 const unCheckNoteCard = () => {
   isCheck.value = false
   const item: NoteCardModel = {
-    id: props.id,
-    title: props.title,
-    content: props.content,
+    ...props,
     isCheck: isCheck.value,
-    notification: props.notification,
-    timePickerOnce: props.timePickerOnce,
-    timePickerDay: props.timePickerDay
   }
   storeNoteCard.updateNoteCard(item)
 }

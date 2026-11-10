@@ -165,7 +165,7 @@ const editNoteCard = () => {
 }
 
 const deleteNoteCard = () => {
-  const modal = Modal.confirm({
+  Modal.confirm({
     icon: h(CloseCircleTwoTone, { twoToneColor: '#F56C6C' }),
     content: `确认删除：「 ${[props.title]} 」?`,
     okText: '删除',

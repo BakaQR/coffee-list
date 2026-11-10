@@ -35,7 +35,6 @@ declare module 'vue' {
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
-    ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
     LayoutTemplate: typeof import('./src/components/layout/LayoutTemplate.vue')['default']
     NoteCard: typeof import('./src/components/home/NoteCard.vue')['default']
     NoteCardFormModal: typeof import('./src/components/home/NoteCardFormModal.vue')['default']

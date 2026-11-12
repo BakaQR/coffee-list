@@ -89,7 +89,7 @@ import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import { NoteCardModel } from '@renderer/tauri/store-api'
 import { Modal } from 'ant-design-vue'
-import { registerNoteCardTimerTask } from '@renderer/utils/timer'
+import { registerNoteCardTimerTask } from '@renderer/utils/notification-timer'
 
 const storeSettings = useSettingsStore()
 const storeNoteCard = useNoteCardStore()

@@ -46,6 +46,7 @@
             <a-form-item
               v-if="formState.notification !== 'none'"
               label="选择时间"
+              :name="formState.notification === 'once' ? 'timePickerOnce' : 'timePickerDay'"
             >
               <a-time-picker
                 v-if="formState.notification === 'day'"
@@ -67,6 +68,9 @@
                 value-format="YYYY-MM-DD HH:mm"
                 placement="top"
                 style="width: 100%"
+                :disabled-date="disabledDate"
+                :disabled-hours="disabledHours"
+                :disabled-minutes="disabledMinutes"
               />
             </a-form-item>
           </a-form>
@@ -84,7 +88,8 @@ import dayjs from 'dayjs'
 
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import type { NoteCardModel } from '@renderer/tauri/store-api'
-import { registerNoteCardTimerTask } from '@renderer/utils/timer'
+import { registerNoteCardTimerTask } from '@renderer/utils/notification-timer'
+import { disabledDate, disabledHours, disabledMinutes } from '@renderer/utils/time'
 
 const emit = defineEmits<{
   (e: 'saved', item: NoteCardModel): void
@@ -113,6 +118,18 @@ const resetForm = () => {
 
 const formState = ref<NoteCardModel>(createDefaultForm())
 
+// 校验 formState.notification === 'once' 选择的时间是否过期
+const validateTimePickerOnce = async (_rule: Rule, value: string) => {
+  if (!value) {
+    return Promise.reject('请选择日期与时间')
+  }
+  const target = dayjs(value, 'YYYY-MM-DD HH:mm')
+  if (target.isBefore(dayjs(), 'minute')) {
+    return Promise.reject('单次通知的时间不能早于当前时间')
+  }
+  return Promise.resolve()
+}
+
 const rules: Record<string, Rule[]> = {
   title: [
     {
@@ -126,6 +143,9 @@ const rules: Record<string, Rule[]> = {
       message: '请输入便签内容',
       trigger: 'change',
     },
+  ],
+  timePickerOnce: [
+    { validator: validateTimePickerOnce, trigger: 'change' }
   ],
 }
 

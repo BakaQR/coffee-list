@@ -63,28 +63,38 @@ fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
         .build()
 }
 
-// 生产环境阻止所有快捷键
+// 生产环境测试，允许快捷键
 #[cfg(not(debug_assertions))]
 fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
-    use tauri_plugin_prevent_default::{Flags, PlatformOptions};
+    use tauri_plugin_prevent_default::Flags;
     tauri_plugin_prevent_default::Builder::new()
-        .platform(
-            PlatformOptions::new()
-                // Whether general form information should be saved and autofilled.
-                .general_autofill(true)
-                // Whether password information should be autosaved.
-                .password_autosave(false)
-                // Whether browser-specific accelerator keys are enabled.
-                .browser_accelerator_keys(false)
-                // Whether the default context menus are shown in the webview.
-                .default_context_menus(false)
-                // Whether the webview renders the default JavaScript dialog box.
-                .default_script_dialogs(false),
-        )
-        .with_flags(Flags::all())
+        .with_flags(Flags::CONTEXT_MENU | Flags::PRINT | Flags::DOWNLOADS)
         .build()
 }
 
+// 生产环境阻止所有快捷键
+// #[cfg(not(debug_assertions))]
+// fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
+//     use tauri_plugin_prevent_default::{Flags, PlatformOptions};
+//     tauri_plugin_prevent_default::Builder::new()
+//         .platform(
+//             PlatformOptions::new()
+//                 // Whether general form information should be saved and autofilled.
+//                 .general_autofill(true)
+//                 // Whether password information should be autosaved.
+//                 .password_autosave(false)
+//                 // Whether browser-specific accelerator keys are enabled.
+//                 .browser_accelerator_keys(false)
+//                 // Whether the default context menus are shown in the webview.
+//                 .default_context_menus(false)
+//                 // Whether the webview renders the default JavaScript dialog box.
+//                 .default_script_dialogs(false),
+//         )
+//         .with_flags(Flags::all())
+//         .build()
+// }
+
+// 运行主函数
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()

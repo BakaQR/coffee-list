@@ -10,13 +10,6 @@ import emitter from '@renderer/utils/emitter'
 // 定时器列表
 const timerIdList: ReturnType<typeof setTimeout>[] = []
 
-// 判断当前时间是否已超过目标时间（今天）
-export const isTimePassedToday = (targetTime: string): boolean => {
-  const now = dayjs()
-  const target = dayjs(targetTime, 'HH:mm')
-  return now.isAfter(target) // 当前时间 > 目标时间
-}
-
 // 添加定时任务
 export const addTimer = (callback: () => void, delay: number) => {
   const id = setTimeout(callback, delay) as ReturnType<typeof setTimeout>
@@ -63,8 +56,8 @@ const startDailyLoop = async (item: NoteCardModel) => {
 
 const startOnce = async (item: NoteCardModel) => {
   let target = dayjs(item.timePickerOnce, 'YYYY-MM-DD HH:mm')
-  if (target.isBefore(dayjs())) target = target.add(1, 'day')
   const delay = target.diff(dayjs())
+  console.log(`一次性通知: ${delay}`)
   addTimer(async () => {
     item.notification = 'none'
     item.timePickerOnce = ''

@@ -35,7 +35,7 @@
             :is-check="item.isCheck"
             :notification="item.notification"
             :time-picker-once="item.timePickerOnce"
-            :time-picker-day="item.timePickerDay""
+            :time-picker-day="item.timePickerDay"
             @edit-note-card="handleEditNoteCard"
           />
         </VueDraggable>

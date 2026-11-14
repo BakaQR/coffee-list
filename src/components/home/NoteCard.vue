@@ -27,7 +27,7 @@
       >
         <p>{{ props.content }}</p>
       </div>
-      <template #actions v-if="showActions">
+      <template v-if="showActions" #actions>
         <a-tooltip
           v-if="!isCheck"
           :color="`#00b96b`"

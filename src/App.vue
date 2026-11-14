@@ -51,7 +51,6 @@ const localeElementPlus = zhCN_ElementPlus
 const collapsed = ref<boolean>(true)
 const selectedKeys = ref<string[]>(['/'])
 
-
 const pageNoteCardTitle = computed(() =>
   storeSettings.options.iconTooltip ? '便签' : ''
 )
@@ -80,7 +79,7 @@ const handleMenuRouterTo = ({ key }: { key: string }) => {
 }
 
 import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
-import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue'
 const storeSettings = useSettingsStore()
 
 onMounted(async () => {
@@ -88,7 +87,6 @@ onMounted(async () => {
     if (e.button === 3 || e.button === 4) e.preventDefault()
   })
 })
-
 </script>
 
 <style scoped>

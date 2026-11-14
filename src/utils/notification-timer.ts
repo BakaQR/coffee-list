@@ -43,9 +43,7 @@ const startDailyLoop = async (item: NoteCardModel) => {
     addTimer(async () => {
       await enqueuePersistedNotification(
         '便签定时通知',
-        '便签：「' +
-          item.title +
-          '」已到达设定时间'
+        '便签：「' + item.title + '」已到达设定时间'
       )
       emitter.emit('notification-over')
       scheduleNext()
@@ -55,7 +53,7 @@ const startDailyLoop = async (item: NoteCardModel) => {
 }
 
 const startOnce = async (item: NoteCardModel) => {
-  let target = dayjs(item.timePickerOnce, 'YYYY-MM-DD HH:mm')
+  const target = dayjs(item.timePickerOnce, 'YYYY-MM-DD HH:mm')
   const delay = target.diff(dayjs())
   console.log(`一次性通知: ${delay}`)
   addTimer(async () => {
@@ -78,7 +76,7 @@ export const registerNoteCardTimerTask = async () => {
   for (const item of list) {
     if (item.notification === 'none') continue
     if (item.notification === 'once') await startOnce(item)
-    if (item.notification === 'day') await startDailyLoop(item);
+    if (item.notification === 'day') await startDailyLoop(item)
   }
 
   // await setNoteCardList(list)

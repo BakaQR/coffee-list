@@ -57,8 +57,8 @@ export interface NoteCardModel {
   content: string
   isCheck: boolean
   notification: 'none' | 'once' | 'day'
-  timePickerOnce?: string                   // 只通知一次 要选到具体的日期和时间
-  timePickerDay?: string                    // 每天都通知 只需要选时间 不需要选日期
+  timePickerOnce?: string // 只通知一次 要选到具体的日期和时间
+  timePickerDay?: string // 每天都通知 只需要选时间 不需要选日期
 }
 export const getNoteCardList = async () => {
   return (await storeNoteCards.get('list')) as unknown as NoteCardModel[]
@@ -90,7 +90,7 @@ const initialNoteCardData = async () => {
     isCheck: false,
     notification: 'none',
     timePickerOnce: '',
-    timePickerDay: ''
+    timePickerDay: '',
   }
   await storeNoteCards.set('list', [defaultNoteCard])
 }

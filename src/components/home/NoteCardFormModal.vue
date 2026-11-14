@@ -46,7 +46,11 @@
             <a-form-item
               v-if="formState.notification !== 'none'"
               label="选择时间"
-              :name="formState.notification === 'once' ? 'timePickerOnce' : 'timePickerDay'"
+              :name="
+                formState.notification === 'once'
+                  ? 'timePickerOnce'
+                  : 'timePickerDay'
+              "
             >
               <a-time-picker
                 v-if="formState.notification === 'day'"
@@ -89,7 +93,11 @@ import dayjs from 'dayjs'
 import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
 import type { NoteCardModel } from '@renderer/tauri/store-api'
 import { registerNoteCardTimerTask } from '@renderer/utils/notification-timer'
-import { disabledDate, disabledHours, disabledMinutes } from '@renderer/utils/time'
+import {
+  disabledDate,
+  disabledHours,
+  disabledMinutes,
+} from '@renderer/utils/time'
 
 const emit = defineEmits<{
   (e: 'saved', item: NoteCardModel): void
@@ -108,8 +116,8 @@ const createDefaultForm = (): NoteCardModel => ({
   content: '',
   isCheck: false,
   notification: 'none',
-  timePickerOnce: '',       // YYYY-MM-DD HH:mm   2077-07-07 00:00
-  timePickerDay: '',        // HH:mm              00:00
+  timePickerOnce: '', // YYYY-MM-DD HH:mm   2077-07-07 00:00
+  timePickerDay: '', // HH:mm              00:00
 })
 
 const resetForm = () => {
@@ -144,9 +152,7 @@ const rules: Record<string, Rule[]> = {
       trigger: 'change',
     },
   ],
-  timePickerOnce: [
-    { validator: validateTimePickerOnce, trigger: 'change' }
-  ],
+  timePickerOnce: [{ validator: validateTimePickerOnce, trigger: 'change' }],
 }
 
 // 新增模式 清空表单 时间默认取当前时刻
@@ -174,7 +180,7 @@ const openEdit = async (item: NoteCardModel) => {
   formState.value = { ...item }
 
   // 不发送通知时 对齐新增模式 时间默认取当前时刻
-  if(formState.value.notification === 'none'){
+  if (formState.value.notification === 'none') {
     formState.value.timePickerOnce = dayjs().format('YYYY-MM-DD HH:mm')
     formState.value.timePickerDay = dayjs().format('HH:mm')
   }
@@ -193,7 +199,7 @@ const handleOk = async () => {
   }
 
   // 不发送通知时重置两个日期的值
-  if(formState.value.notification === 'none') {
+  if (formState.value.notification === 'none') {
     formState.value.timePickerOnce = ''
     formState.value.timePickerDay = ''
   }

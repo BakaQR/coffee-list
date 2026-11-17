@@ -23,18 +23,6 @@ export const clearTimer = () => {
   timerIdList.length = 0
 }
 
-// delay 格式化
-export const formatDelay = (ms: number) => {
-  const totalMinutes = Math.floor(ms / (1000 * 60)) // 总分钟数（向下取整）
-  const hours = String(Math.floor(totalMinutes / 60))
-  const minutes = String(totalMinutes % 60).padStart(2, '0')
-  if (hours === '0') {
-    return `${minutes}分钟后`
-  } else {
-    return `${hours}小时${minutes}分钟后`
-  }
-}
-
 const startDailyLoop = async (item: NoteCardModel) => {
   const scheduleNext = () => {
     let target = dayjs(item.timePickerDay, 'HH:mm')
@@ -78,6 +66,21 @@ export const registerNoteCardTimerTask = async () => {
     if (item.notification === 'once') await startOnce(item)
     if (item.notification === 'day') await startDailyLoop(item)
   }
+}
 
-  // await setNoteCardList(list)
+// 清除所有便签的通知及定时器
+export const clearNoteCardTimerTask = async () => {
+  clearTimer()
+  const list: NoteCardModel[] = await getNoteCardList()
+
+  for (const item of list) {
+    item.notification = 'none'
+    item.timePickerDay = ''
+    item.timePickerOnce = ''
+    await modifyNoteCard(item)
+    console.log(item)
+  }
+
+  // 更新 pinia 中的便签列表
+  emitter.emit('note-card-list-update')
 }

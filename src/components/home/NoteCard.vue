@@ -85,11 +85,14 @@ import {
 } from '@ant-design/icons-vue'
 import { h, PropType, ref, watch } from 'vue'
 
-import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
-import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
+import { useSettingsStore } from '@renderer/pinia/stores/setting-store'
+import { useNoteCardStore } from '@renderer/pinia/stores/note-card-store'
 import { NoteCardModel } from '@renderer/tauri/store-api'
 import { Modal } from 'ant-design-vue'
 import { registerNoteCardTimerTask } from '@renderer/utils/notification-timer'
+import { modalModel, openAntDesignModal } from '@renderer/utils/modal'
+import { ElMessage } from 'element-plus'
+import { COLOR } from '@renderer/utils/color'
 
 const storeSettings = useSettingsStore()
 const storeNoteCard = useNoteCardStore()
@@ -155,22 +158,23 @@ const editNoteCard = () => {
 }
 
 const deleteNoteCard = () => {
-  Modal.confirm({
-    icon: h(CloseCircleTwoTone, { twoToneColor: '#F56C6C' }),
+  const modalParam: modalModel = {
+    icon: CloseCircleTwoTone,
+    iconColor: COLOR.light_danger,
+    title: '便签删除',
     content: `确认删除：「 ${[props.title]} 」?`,
-    okText: '删除',
-    okType: 'danger',
-    centered: true,
-    async onOk() {
+    type: 'danger',
+    maskClosable: false,
+    handleOk: async () => {
       storeNoteCard.deleteNoteCard(props.id)
       await registerNoteCardTimerTask()
-    },
-    maskClosable: true,
-    cancelText: '取消',
-    onCancel() {
-      Modal.destroyAll()
-    },
-  })
+      ElMessage({
+        message: '删除成功',
+        type: 'success',
+      })
+    }
+  }
+  openAntDesignModal(modalParam)
 }
 
 const openDetail = () => {

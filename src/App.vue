@@ -78,7 +78,7 @@ const handleMenuRouterTo = ({ key }: { key: string }) => {
   router.push({ path: key })
 }
 
-import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
+import { useSettingsStore } from '@renderer/pinia/stores/setting-store'
 import { BookOutlined, SettingOutlined } from '@ant-design/icons-vue'
 const storeSettings = useSettingsStore()
 

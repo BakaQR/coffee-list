@@ -43,6 +43,9 @@ export const useNoteCardStore = defineStore('note-card-store', () => {
   // 通知定时器结束后 更新便签列表
   emitter.on('notification-over', updateNoteCardList)
 
+  // 更新便签列表
+  emitter.on('note-card-list-update', updateNoteCardList)
+
   return {
     list,
     updateNoteCardList,

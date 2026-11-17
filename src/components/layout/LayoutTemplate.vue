@@ -11,7 +11,11 @@
       </a-row>
     </a-layout-header>
     <a-layout-content class="view-layout-content">
-      <slot name="bodyContent" />
+      <div>
+        <el-scrollbar style="height: calc(100vh - 64px)">
+          <slot name="bodyContent" />
+        </el-scrollbar>
+      </div>
     </a-layout-content>
 
     <!-- 用于 model 等不包裹在页面 content 中的组件 -->

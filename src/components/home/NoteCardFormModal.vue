@@ -90,7 +90,7 @@ import type { Rule } from 'ant-design-vue/es/form'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 
-import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
+import { useNoteCardStore } from '@renderer/pinia/stores/note-card-store'
 import type { NoteCardModel } from '@renderer/tauri/store-api'
 import { registerNoteCardTimerTask } from '@renderer/utils/notification-timer'
 import {
@@ -190,6 +190,7 @@ const openEdit = async (item: NoteCardModel) => {
   formRef.value?.clearValidate()
 }
 
+// 确认
 const handleOk = async () => {
   try {
     await formRef.value?.validate()
@@ -203,6 +204,15 @@ const handleOk = async () => {
     formState.value.timePickerOnce = ''
     formState.value.timePickerDay = ''
   }
+
+  if (formState.value.notification === 'day') {
+    formState.value.timePickerOnce = ''
+  }
+
+  if (formState.value.notification === 'once') {
+    formState.value.timePickerDay = ''
+  }
+
 
   const noteItem: NoteCardModel = { ...formState.value }
 

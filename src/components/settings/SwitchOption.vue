@@ -51,7 +51,7 @@ const handleCheckedChange = (value: boolean) => {
 
 .func-area {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
 }
 </style>

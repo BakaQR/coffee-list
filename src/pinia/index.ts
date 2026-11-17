@@ -1,6 +1,6 @@
 import { createPinia } from 'pinia'
-import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
-import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
+import { useNoteCardStore } from '@renderer/pinia/stores/note-card-store'
+import { useSettingsStore } from '@renderer/pinia/stores/setting-store'
 
 export const pinia = createPinia()
 

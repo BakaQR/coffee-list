@@ -1,12 +1,12 @@
 <template>
   <LayoutTemplate title="设置">
     <template #bodyContent>
-      <div class="p-4">
+      <div class="mt-4 mb-4 pl-4 pr-4 flex flex-col gap-4">
+
         <a-card :bordered="false">
           <template #title>
-            <p class="font-text-label">系统设置</p>
+            <p class="font-text-label">显示</p>
           </template>
-
           <div class="flex flex-col gap-4">
             <SwitchOption v-model:checked="switchIconTooltip">
               <template #description>
@@ -26,29 +26,51 @@
                 </div>
               </template>
             </SwitchOption>
-            <SwitchOption
-              v-model:checked="switchShowTray"
-              :descriptions="'显示系统托盘'"
-            />
-            <SwitchOption
-              v-model:checked="switchMinimize"
-              :descriptions="'关闭时最小化到系统托盘'"
-            />
-            <SwitchOption
-              v-model:checked="switchAutoStart"
-              :descriptions="'开机自启动'"
-            />
+          </div>
+        </a-card>
+
+        <a-card :bordered="false">
+          <template #title>
+            <p class="font-text-label">通知</p>
+          </template>
+          <div class="flex flex-col gap-4">
             <SwitchOption
               v-model:checked="switchNotificationSound"
-              :descriptions="'通知音效'"
+              descriptions="通知音效"
             />
             <ButtonOption
-              :button-text="'发送通知'"
-              :descriptions="'测试系统通知，如无显示，请检查「设置-系统-通知」是否允许程序发送通知'"
+              text="发送通知"
+              descriptions="测试系统通知，如无显示，请检查「设置-系统-通知」是否允许程序发送通知"
               @button:click="testNotification"
+            />
+            <ButtonOption
+              text="重置通知"
+              descriptions="当发送通知异常时，例如出现重复发送，可重置尝试修复"
+              @button:click="clearNotification"
             />
           </div>
         </a-card>
+
+        <a-card :bordered="false">
+          <template #title>
+            <p class="font-text-label">系统</p>
+          </template>
+          <div class="flex flex-col gap-4">
+            <SwitchOption
+              v-model:checked="switchShowTray"
+              descriptions="显示系统托盘"
+            />
+            <SwitchOption
+              v-model:checked="switchMinimize"
+              descriptions="关闭时最小化到系统托盘"
+            />
+            <SwitchOption
+              v-model:checked="switchAutoStart"
+              descriptions="开机自启动"
+            />
+          </div>
+        </a-card>
+
       </div>
     </template>
   </LayoutTemplate>
@@ -59,10 +81,14 @@ import { computed, h } from 'vue'
 import { FileAddOutlined } from '@ant-design/icons-vue'
 import SwitchOption from '@renderer/components/settings/SwitchOption.vue'
 import ButtonOption from '@renderer/components/settings/ButtonOption.vue'
-
-import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
+import { CloseCircleTwoTone } from '@ant-design/icons-vue'
+import { useSettingsStore } from '@renderer/pinia/stores/setting-store'
 import { enqueuePersistedNotification } from '@renderer/tauri/notification-api'
 import LayoutTemplate from '@renderer/components/layout/LayoutTemplate.vue'
+import { ElMessage } from 'element-plus'
+import { clearNoteCardTimerTask } from '@renderer/utils/notification-timer'
+import { modalModel, openAntDesignModal } from '@renderer/utils/modal'
+import { COLOR } from '@renderer/utils/color'
 
 const storeSettings = useSettingsStore()
 
@@ -103,6 +129,25 @@ const switchNotificationSound = computed({
 
 const testNotification = async () => {
   await enqueuePersistedNotification('测试通知是否正常发送', '现已发送成功！')
+}
+
+const clearNotification = async () => {
+  const modalParam: modalModel = {
+    icon: CloseCircleTwoTone,
+    iconColor: COLOR.light_danger,
+    title: '重置通知',
+    content: `确认重置所有便签的通知吗？这会让所有便签的通知类型全部改为"不通知"`,
+    type: 'danger',
+    maskClosable: false,
+    handleOk: async () => {
+      await clearNoteCardTimerTask()
+      ElMessage({
+        message: '重置成功',
+        type: 'success',
+      })
+    }
+  }
+  openAntDesignModal(modalParam)
 }
 </script>
 <style scoped lang="scss">

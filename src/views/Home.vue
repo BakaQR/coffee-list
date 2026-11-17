@@ -16,7 +16,7 @@
       </a-tooltip>
     </template>
     <template #bodyContent>
-      <el-scrollbar class="note-card-scrollbar">
+      <div>
         <VueDraggable
           v-model="list"
           class="note-card-list-container"
@@ -39,7 +39,7 @@
             @edit-note-card="handleEditNoteCard"
           />
         </VueDraggable>
-      </el-scrollbar>
+      </div>
     </template>
 
     <template #outsideAction>
@@ -55,8 +55,8 @@ import { FileAddOutlined } from '@ant-design/icons-vue'
 
 import { h, onMounted, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import { useNoteCardStore } from '@renderer/pinia/stores/NoteCardStore'
-import { useSettingsStore } from '@renderer/pinia/stores/SettingStore'
+import { useNoteCardStore } from '@renderer/pinia/stores/note-card-store'
+import { useSettingsStore } from '@renderer/pinia/stores/setting-store'
 import { NoteCardModel } from '@renderer/tauri/store-api'
 import LayoutTemplate from '@renderer/components/layout/LayoutTemplate.vue'
 
@@ -97,10 +97,6 @@ const handleEditNoteCard = (item: NoteCardModel) => {
 
 .view-layout-content {
   padding: 0 4px 0 0;
-}
-
-.note-card-scrollbar {
-  height: calc(100vh - 64px);
 }
 
 .note-card-list-container {

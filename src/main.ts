@@ -6,6 +6,7 @@ import { pinia, initializeStore } from '@renderer/pinia'
 // 全局样式
 import '@renderer/assets/style/tailwind.css'
 import '@renderer/assets/style/root.scss'
+import 'element-plus/dist/index.css'
 
 // 标题栏按钮
 import '@renderer/tauri/title-bar'

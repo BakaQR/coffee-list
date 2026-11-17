@@ -6,20 +6,16 @@
   >
     <a-col :span="21">
       <div class="font-text-normal">
-        <div v-if="props.descriptions !== ''">
-          <span>{{ props.descriptions }}</span>
+        <div>
+          <span>{{ props.descriptions !== '' ? props.descriptions : '默认描述'  }}</span>
         </div>
-        <slot v-else name="description">
-          <span>按钮文字描述</span>
-        </slot>
       </div>
     </a-col>
     <a-col :span="3">
       <div class="func-area">
-        <a-button v-if="props.descriptions !== ''" @click="handleButtonClick">
-          {{ props.buttonText }}
+        <a-button block @click="handleButtonClick">
+          {{ props.text !== '' ? props.text : '按钮' }}
         </a-button>
-        <a-button v-else @click="handleButtonClick">按钮</a-button>
       </div>
     </a-col>
   </a-row>
@@ -31,7 +27,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  buttonText: {
+  text: {
     type: String,
     default: '',
   },

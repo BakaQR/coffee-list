@@ -36,3 +36,15 @@ export const isTimePassedToday = (timeStr: string): boolean => {
   const target = dayjs(timeStr, 'YYYY-MM-DD HH:mm')
   return target.isBefore(now, 'minute')
 }
+
+// delay 格式化
+export const formatDelay = (ms: number) => {
+  const totalMinutes = Math.floor(ms / (1000 * 60)) // 总分钟数（向下取整）
+  const hours = String(Math.floor(totalMinutes / 60))
+  const minutes = String(totalMinutes % 60).padStart(2, '0')
+  if (hours === '0') {
+    return `${minutes}分钟后`
+  } else {
+    return `${hours}小时${minutes}分钟后`
+  }
+}

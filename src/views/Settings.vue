@@ -2,7 +2,6 @@
   <LayoutTemplate title="设置">
     <template #bodyContent>
       <div class="mt-4 mb-4 pl-4 pr-4 flex flex-col gap-4">
-
         <a-card :bordered="false">
           <template #title>
             <p class="font-text-label">显示</p>
@@ -70,7 +69,6 @@
             />
           </div>
         </a-card>
-
       </div>
     </template>
   </LayoutTemplate>
@@ -145,7 +143,7 @@ const clearNotification = async () => {
         message: '重置成功',
         type: 'success',
       })
-    }
+    },
   }
   openAntDesignModal(modalParam)
 }

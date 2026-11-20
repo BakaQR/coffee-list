@@ -213,7 +213,6 @@ const handleOk = async () => {
     formState.value.timePickerDay = ''
   }
 
-
   const noteItem: NoteCardModel = { ...formState.value }
 
   // 编辑模式下直接传递原有的id 新建模式下直接使用新的随机id
@@ -258,7 +257,6 @@ defineExpose({
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-left: 24px;
 
   .modal-header {
     display: flex;
@@ -272,7 +270,7 @@ defineExpose({
 }
 
 .modal-body-scrollbar {
-  padding-right: 24px;
+  padding: 0 24px;
 }
 
 :deep(.time-picker-with-left-icon) {

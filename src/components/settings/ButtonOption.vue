@@ -7,7 +7,9 @@
     <a-col :span="21">
       <div class="font-text-normal">
         <div>
-          <span>{{ props.descriptions !== '' ? props.descriptions : '默认描述'  }}</span>
+          <span>{{
+            props.descriptions !== '' ? props.descriptions : '默认描述'
+          }}</span>
         </div>
       </div>
     </a-col>
